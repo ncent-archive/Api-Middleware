@@ -1,0 +1,19 @@
+{
+  "name": "ncent-api-middleware",
+  "version": "1.0.0",
+  "description": "this package serves as the bridge between applications and the nCent API. It's primary functionality is to manage calls to the API as well as important user information such as accounts and API credentials",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ncent/Api-Middleware.git"
+  },
+  "author": "nCent Labs",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ncent/Api-Middleware/issues"
+  },
+  "homepage": "https://github.com/ncent/Api-Middleware#readme"
+}
