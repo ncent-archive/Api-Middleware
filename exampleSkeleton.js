@@ -7,27 +7,27 @@ module.exports = {
 
     },
 
-    async findOneUser (callerId, userId) {
+    async findOneUser (userId) {
 
     },
 
-    async loginUser (callerId, firstname, lastname) {
+    async loginUser () {
 
     },
 
-    async logoutUser (callerId, firstname, lastname) {
+    async logoutUser () {
 
     },
 
-    async resetUserAccount (callerId, firstname, lastname) {
+    async resetUserAccount (firstname, lastname) {
 
     },
 
-    async findAllBalancesForUser (callerId) {
+    async findAllBalancesForUser () {
 
     },
 
-    async createChallenge (callerId, challengeData) {
+    async createChallenge (challengeData) {
 
     },
 
@@ -35,23 +35,23 @@ module.exports = {
 
     },
 
-    async findAllChallenges (callerId) {
+    async findAllChallenges () {
 
     },
 
-    async findAllBalancesForChallenge (callerId, challengeId) {
+    async findAllBalancesForChallenge (challengeId) {
 
     },
 
-    async shareChallenge (callerId, challengeId, publicKeyToShareWith, shares, emailToShareWith) {
+    async shareChallenge (challengeId, publicKeyToShareWith, shares, emailToShareWith) {
 
     },
 
-    async redeemChallenge (callerId, challengeId, redeemerPublicKey) {
+    async redeemChallenge (challengeId, redeemerPublicKey) {
 
     },
 
-    async completeChallenge (callerId, challengeId, redeemerPublicKey) {
+    async completeChallenge (challengeId, redeemerPublicKey) {
 
     }
 };
