@@ -4,6 +4,7 @@
   "description": "this package serves as the bridge between applications and the nCent API. It's primary functionality is to manage calls to the API as well as important user information such as accounts and API credentials",
   "main": "index.js",
   "scripts": {
+    "start:dev": "nodemon ./bin/www",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -15,5 +16,16 @@
   "bugs": {
     "url": "https://github.com/ncent/Api-Middleware/issues"
   },
-  "homepage": "https://github.com/ncent/Api-Middleware#readme"
+  "homepage": "https://github.com/ncent/Api-Middleware#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "morgan": "^1.9.1",
+    "pg": "^7.8.0",
+    "pg-hstore": "^2.3.2",
+    "sequelize": "^4.42.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.10"
+  }
 }
