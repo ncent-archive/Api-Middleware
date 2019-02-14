@@ -1,20 +1,43 @@
-const express = require('express');
-const logger = require('morgan');
-const bodyParser = require('body-parser');
-
-// Set up the express app
+const express = require("express");
+const logger = require("morgan");
+const bodyParser = require("body-parser");
+const session = require("express-session");
+const postgreSQLStore = require("connect-pg-simple")(session);
 const app = express();
-
-// Log requests to the console.
-app.use(logger('dev'));
-
-// Parse incoming requests data (https://github.com/expressjs/body-parser)
+const cookieParser = require("cookie-parser");
+app.use(logger("dev"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
 
-// Setup a default catch-all route that sends back a welcome message in JSON format.
-app.get('*', (req, res) => res.status(200).send({
-    message: 'Welcome to the beginning of nothingness.',
-}));
+app.use(
+    session({
+        key: "session_token",
+        secret: "somesecret",
+        resave: true,
+        saveUninitialized: false,
+        cookie: {
+            expires: 100000000000
+        },
+        store: new postgreSQLStore({
+            conString: "postgres://@localhost:5432/hybrid-dev"
+        })
+    })
+);
+
+app.use((req, res, next) => {
+    if (req.cookies.session_token && !req.session.user) {
+        res.clearCookie('session_token');
+    }
+    next();
+});
+
+require("./server/routes")(app);
+
+app.get("*", (req, res) =>
+    res.status(200).send({
+        message: "Welcome to the nCent API Middleware server."
+    })
+);
 
 module.exports = app;
