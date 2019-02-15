@@ -1,32 +1,6 @@
 "use strict";
 
-const nCentApiEndpoint = "https://faw5rz7094.execute-api.us-west-1.amazonaws.com/development";
-
 module.exports = {
-    async createUser (email, firstname, lastname) {
-
-    },
-
-    async findOneUser (userId) {
-
-    },
-
-    async loginUser () {
-
-    },
-
-    async logoutUser () {
-
-    },
-
-    async resetUserAccount (firstname, lastname) {
-
-    },
-
-    async findAllBalancesForUser () {
-
-    },
-
     async createChallenge (challengeData) {
 
     },
