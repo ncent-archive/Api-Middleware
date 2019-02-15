@@ -19,7 +19,10 @@
   "homepage": "https://github.com/ncent/Api-Middleware#readme",
   "dependencies": {
     "body-parser": "^1.18.3",
+    "connect-pg-simple": "^5.0.0",
+    "cookie-parser": "^1.4.4",
     "express": "^4.16.4",
+    "express-session": "^1.15.6",
     "morgan": "^1.9.1",
     "pg": "^7.8.0",
     "pg-hstore": "^2.3.2",
