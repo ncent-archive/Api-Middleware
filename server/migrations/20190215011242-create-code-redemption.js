@@ -8,9 +8,16 @@ module.exports = {
                 autoIncrement: true,
                 type: DataTypes.INTEGER
             },
-            referralCode: {
+            challengeParticipantId: {
                 allowNull: false,
-                type: DataTypes.STRING(525)
+                type: DataTypes.INTEGER,
+                foreignKey: true,
+                onDelete: 'CASCADE',
+                references: {
+                    model: 'ChallengeParticipants',
+                    key: 'id',
+                    as: 'challengeParticipantId'
+                }
             },
             userId: {
                 allowNull: false,
