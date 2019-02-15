@@ -1,31 +1,33 @@
 "use strict";
 
+const apiEndpoint = "https://faw5rz7094.execute-api.us-west-1.amazonaws.com/development";
+
 module.exports = {
-    async createChallenge (challengeData) {
+    async createChallenge (req, res) {
 
     },
 
-    async findOneChallenge (challengeId) {
+    async findOneChallenge (req, res) {
 
     },
 
-    async findAllChallenges () {
+    async findAllChallenges (req, res) {
 
     },
 
-    async findAllBalancesForChallenge (challengeId) {
+    async findAllBalancesForChallenge (req, res) {
 
     },
 
-    async shareChallenge (challengeId, publicKeyToShareWith, shares, emailToShareWith) {
+    async shareChallenge (req, res) {
 
     },
 
-    async redeemChallenge (challengeId, redeemerPublicKey) {
+    async redeemChallenge (req, res) {
 
     },
 
-    async completeChallenge (challengeId, redeemerPublicKey) {
+    async completeChallenge (req, res) {
 
     }
 };

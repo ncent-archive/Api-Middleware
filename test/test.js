@@ -1,0 +1,1 @@
+const userCreationTest = require('./integration/UserCreationTest.js');
