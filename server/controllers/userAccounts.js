@@ -1,9 +1,9 @@
 "use strict";
 
-const apiEndpoint = "https://faw5rz7094.execute-api.us-west-1.amazonaws.com/development";
+const apiEndpoint = process.env.API;
 const axios = require("axios");
 const axiosRetry = require("axios-retry");
-axiosRetry(axios, {retries: 3});
+axiosRetry(axios, {retries: 3, retryDelay: axiosRetry.exponentialDelay});
 
 module.exports = {
     async createUser (req, res) {
@@ -14,7 +14,7 @@ module.exports = {
             lastname
         });
 
-        res.status(createUserResponse.status).send(createUserResponse.data.value);
+        return res.status(createUserResponse.status).send(createUserResponse.data.value);
     },
 
     async findOneUser (req, res) {
