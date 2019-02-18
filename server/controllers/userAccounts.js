@@ -1,27 +1,39 @@
 "use strict";
 
+const apiEndpoint = process.env.API;
+const axios = require("axios");
+const axiosRetry = require("axios-retry");
+axiosRetry(axios, {retries: 3, retryDelay: axiosRetry.exponentialDelay});
+
 module.exports = {
-    async createUser (email, firstname, lastname) {
+    async createUser (req, res) {
+        const {email, firstname, lastname} = req.body;
+        const createUserResponse = await axios.post(`${apiEndpoint}/user`, {
+            email,
+            firstname,
+            lastname
+        });
+
+        return res.status(createUserResponse.status).send(createUserResponse.data.value);
+    },
+
+    async findOneUser (req, res) {
 
     },
 
-    async findOneUser (userId) {
+    async loginUser (req, res) {
 
     },
 
-    async loginUser () {
+    async logoutUser (req, res) {
 
     },
 
-    async logoutUser () {
+    async resetUserAccount (req, res) {
 
     },
 
-    async resetUserAccount (firstname, lastname) {
-
-    },
-
-    async findAllBalancesForUser () {
+    async findAllBalancesForUser (req, res) {
 
     }
 };
