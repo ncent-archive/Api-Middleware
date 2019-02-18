@@ -1,5 +1,6 @@
 "use strict";
 
+const UserAccount = require('../models').UserAccount;
 const apiEndpoint = process.env.API;
 const axios = require("axios");
 const axiosRetry = require("axios-retry");
@@ -14,7 +15,17 @@ module.exports = {
             lastname
         });
 
-        return res.status(createUserResponse.status).send(createUserResponse.data.value);
+        const newUser = createUserResponse.data;
+        await UserAccount.create({
+            apiId: newUser.value.id,
+            apiKey: newUser.value.apiCreds.apiKey,
+            secretKey: newUser.secretKey,
+            publicKey: newUser.value.cryptoKeyPair.publicKey,
+            privateKey: newUser.privateKey,
+            active: false
+        });
+
+        return res.status(createUserResponse.status).send(newUser.value);
     },
 
     async findOneUser (req, res) {
