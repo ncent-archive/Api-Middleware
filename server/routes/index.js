@@ -14,6 +14,9 @@ module.exports = (app) => {
     //retrieves one user account
     app.get("/api/users/:userId", userAccountsController.findOneUser);
 
+    //sends a one-time passcode to the user for login
+    app.post("/api/users/:userId", userAccountsController.sendOTP);
+
     //logs a user in and begins their session
     app.post("/api/users/login", userAccountsController.loginUser);
 

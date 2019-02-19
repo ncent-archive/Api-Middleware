@@ -1,11 +1,11 @@
 "use strict";
 
-const userAccountsController = require("../../server/controllers/userAccounts.js");
-const UserAccount = require("../../server/models").UserAccount;
+const userAccountsController = require("../../../server/controllers/userAccounts.js");
+const UserAccount = require("../../../server/models").UserAccount;
 const apiEndpoint = "https://faw5rz7094.execute-api.us-west-1.amazonaws.com/development";
 const nock = require('nock');
 const expect = require('chai').expect;
-const pseudoRes = require('../utils.js');
+const pseudoRes = require('../../utils.js');
 
 const body = {
     email: "dev@ncnt.io",
