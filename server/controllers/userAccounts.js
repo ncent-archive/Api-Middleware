@@ -62,7 +62,27 @@ module.exports = {
     },
 
     async loginUser(req, res) {
+        const apiId = req.params.userId;
+        const confirmationCode = req.body.code;
 
+        const user = await UserAccount.findOne({ where: {apiId} });
+
+        if (!user) {
+            return res.status(404).send({ error: "User not found." });
+        }
+
+        const expired = Date.now() > user.otpExp;
+        const validCode = bcrypt.compareSync(confirmationCode, user.otpKey) && !expired;
+
+        const findUserResp = await axios.get(`${apiEndpoint}/user?userId=${apiId}&id=${apiId}`);
+
+        if (validCode) {
+            await user.updateAttributes({active: true});
+            req.session.user = findUserResp.data;
+            return res.status(200).send(findUserResp.data);
+        }
+
+        return res.status(403).send({ error: "Invalid code.\nYou can request another code if you like." });
     },
 
     async logoutUser(req, res) {

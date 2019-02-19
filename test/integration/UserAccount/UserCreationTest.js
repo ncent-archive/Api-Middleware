@@ -68,6 +68,6 @@ module.exports = {
             const newUser = users[0];
             expect(newUser.apiId).to.equal(1);
             await UserAccount.destroy({ where: {} });
-        })
+        });
     })
 };
