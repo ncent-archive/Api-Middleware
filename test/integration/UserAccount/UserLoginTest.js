@@ -21,6 +21,7 @@ module.exports = {
         let session;
         let wrongKey;
         let wrongToken;
+        let cookies;
 
         beforeEach(async () => {
             otpKey = otplib.authenticator.generateSecret();
@@ -44,7 +45,12 @@ module.exports = {
             params = {userId: 1};
             successBody = {code: token};
             failureBody = {code: wrongToken};
-            session = {};
+            session = {
+                destroy: function() {
+                    console.log("session deleted");
+                }
+            };
+            cookies = {session_token: "some_token"};
 
             nock(`${apiEndpoint}`)
                 .get('/user')
@@ -99,6 +105,16 @@ module.exports = {
             await userAccountsController.loginUser({params, body: failureBody, session}, new pseudoRes(async function (resp) {
                 expect(typeof resp).to.equal('object');
                 expect(resp.error).to.equal("Invalid code.\nYou can request another code if you like.");
+            }));
+        });
+
+        it('should return a success message upon successful logout', async function () {
+            await userAccountsController.loginUser({params, body: successBody, session}, new pseudoRes(async function (resp) {
+                session.user = resp;
+                await userAccountsController.logoutUser({session, cookies}, new pseudoRes(async function (resp2) {
+                    expect(typeof resp2).to.equal('object');
+                    expect(resp2.message).to.equal("Logged out successfully.");
+                }));
             }));
         });
     })

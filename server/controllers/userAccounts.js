@@ -86,7 +86,15 @@ module.exports = {
     },
 
     async logoutUser(req, res) {
-
+        if (req.session.user && req.cookies.session_token) {
+            const user = await UserAccount.find({where: {apiId: req.session.user.id}});
+            await user.updateAttributes({active: false});
+            res.clearCookie("session_token");
+            req.session.destroy();
+            res.status(200).send({message: "Logged out successfully."});
+        } else {
+            res.status(403).send({error: "No user session detected."});
+        }
     },
 
     async resetUserAccount(req, res) {
