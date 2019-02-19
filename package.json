@@ -18,14 +18,18 @@
   },
   "homepage": "https://github.com/ncent/Api-Middleware#readme",
   "dependencies": {
+    "aws-sdk": "^2.405.0",
     "axios": "^0.18.0",
     "axios-retry": "^3.1.2",
+    "bcrypt": "^3.0.4",
     "body-parser": "^1.18.3",
     "connect-pg-simple": "^5.0.0",
     "cookie-parser": "^1.4.4",
     "express": "^4.16.4",
     "express-session": "^1.15.6",
     "morgan": "^1.9.1",
+    "nodemailer": "^5.1.1",
+    "otplib": "^10.0.1",
     "pg": "^7.8.0",
     "pg-hstore": "^2.3.2",
     "sequelize": "^4.42.0"

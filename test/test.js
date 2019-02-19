@@ -1,1 +1,2 @@
-const userCreationTest = require('./integration/UserCreationTest.js');
+const userCreationTest = require('./integration/UserAccount/UserCreationTest.js');
+const sendOtpTest = require('./integration/UserAccount/SendOtpTest.js');
