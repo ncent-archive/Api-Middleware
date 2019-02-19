@@ -1,5 +1,7 @@
 "use strict";
 
+const axios = require('axios');
+
 class psuedoRes {
     constructor(callback) {
         this.sendCallback = callback;
@@ -9,6 +11,9 @@ class psuedoRes {
     }
     send(val) {
         return this.sendCallback(val);
+    }
+    clearCookie(name, options) {
+        return "cookie cleared";
     }
 }
 
