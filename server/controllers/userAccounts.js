@@ -7,6 +7,7 @@ const otplib = require("otplib");
 const apiEndpoint = process.env.API;
 const axios = require("axios");
 const axiosRetry = require("axios-retry");
+const authHelper = require("../helpers/authHelper.js");
 axiosRetry(axios, {retries: 3, retryDelay: axiosRetry.exponentialDelay});
 
 module.exports = {
@@ -32,7 +33,25 @@ module.exports = {
     },
 
     async findOneUser(req, res) {
+        const apiId = req.params.userId;
+        const user = UserAccount.findOne({where: {apiId}});
 
+        if (!user) {
+            return res.status(404).send({error: "UserAccount not found."});
+        }
+
+        const caller = UserAccount.findOne({where: {apiId: req.session.user.id}});
+        if (!caller) {
+            return res.status(404).send({error: "API Caller account not found"});
+        }
+
+        const findOneUserResp = await axios.get(`${apiEndpoint}/user?userId=${apiId}&id=${apiId}`, {
+            headers: {
+                'Authorization': authHelper.getAuthString(caller.apiKey, caller.secretKey)
+            }
+        });
+
+        return res.status(findOneUserResp.status).send(findOneUserResp.data);
     },
 
     async sendOTP(req, res) {
