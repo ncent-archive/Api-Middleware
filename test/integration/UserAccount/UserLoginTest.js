@@ -2,10 +2,7 @@
 
 const userAccountsController = require("../../../server/controllers/userAccounts.js");
 const UserAccount = require("../../../server/models").UserAccount;
-const apiEndpoint = "https://faw5rz7094.execute-api.us-west-1.amazonaws.com/development";
-const nock = require('nock');
-const expect = require('chai').expect;
-const pseudoRes = require('../../utils.js');
+const testHelper = require('../../testHelper.js');
 const bcrypt = require("bcrypt");
 const otplib = require("otplib");
 
@@ -15,13 +12,13 @@ module.exports = {
         let token;
         let salt;
         let tokenHash;
-        let params;
         let successBody;
         let failureBody;
         let session;
         let wrongKey;
         let wrongToken;
-        let cookies;
+        const params = {userId: 1};
+        const cookies = testHelper.testCookies;
 
         beforeEach(async () => {
             otpKey = otplib.authenticator.generateSecret();
@@ -42,7 +39,6 @@ module.exports = {
                 otpExp: Date.now() + 300000
             });
 
-            params = {userId: 1};
             successBody = {code: token};
             failureBody = {code: wrongToken};
             session = {
@@ -50,70 +46,34 @@ module.exports = {
                     console.log("session deleted");
                 }
             };
-            cookies = {session_token: "some_token"};
 
-            nock(`${apiEndpoint}`)
-                .get('/user')
-                .query({
-                    userId: 1,
-                    id: 1
-                })
-                .reply(200, {
-                    "id": 1,
-                    "createdAt": "2019-02-18T22:34:51.000Z",
-                    "updatedAt": "null",
-                    "deletedAt": "null",
-                    "userMetadata": {
-                        "id": 1,
-                        "createdAt": "2019-02-18T22:34:50.000Z",
-                        "updatedAt": "null",
-                        "deletedAt": "null",
-                        "email": "af@ncnt.io",
-                        "firstname": "dev",
-                        "lastname": "ncnt",
-                        "metadatas": []
-                    },
-                    "cryptoKeyPair": {
-                        "id": 1,
-                        "createdAt": "2019-02-18T22:34:51.000Z",
-                        "updatedAt": "null",
-                        "deletedAt": "null",
-                        "publicKey": "[B@1725dc0f"
-                    },
-                    "apiCreds": {
-                        "id": 1,
-                        "createdAt": "2019-02-18T22:34:51.000Z",
-                        "updatedAt": "null",
-                        "deletedAt": "null",
-                        "apiKey": "[B@7a69b07"
-                    }
-                });
+            testHelper.createNockResponse("GET", "/user", {userId: 1, id: 1}, 200, testHelper.findOneUserNockResp);
         });
 
         afterEach(async () => {
-            await UserAccount.destroy({ where: {} });
+            await testHelper.deleteAllTestUsers();
         });
 
         it('should return the user object on successful login', async function () {
-            await userAccountsController.loginUser({params, body: successBody, session}, new pseudoRes(async function (resp) {
-                expect(typeof resp).to.equal('object');
-                expect(resp.id).to.equal(1);
+            await userAccountsController.loginUser({params, body: successBody, session}, new testHelper.pseudoRes(async function (resp) {
+                testHelper.expect(typeof resp).to.equal('object');
+                testHelper.expect(resp.id).to.equal(1);
             }));
         });
 
         it('should return a failure message if the code given is incorrect', async function () {
-            await userAccountsController.loginUser({params, body: failureBody, session}, new pseudoRes(async function (resp) {
-                expect(typeof resp).to.equal('object');
-                expect(resp.error).to.equal("Invalid code.\nYou can request another code if you like.");
+            await userAccountsController.loginUser({params, body: failureBody, session}, new testHelper.pseudoRes(async function (resp) {
+                testHelper.expect(typeof resp).to.equal('object');
+                testHelper.expect(resp.error).to.equal("Invalid code.\nYou can request another code if you like.");
             }));
         });
 
         it('should return a success message upon successful logout', async function () {
-            await userAccountsController.loginUser({params, body: successBody, session}, new pseudoRes(async function (resp) {
+            await userAccountsController.loginUser({params, body: successBody, session}, new testHelper.pseudoRes(async function (resp) {
                 session.user = resp;
-                await userAccountsController.logoutUser({session, cookies}, new pseudoRes(async function (resp2) {
-                    expect(typeof resp2).to.equal('object');
-                    expect(resp2.message).to.equal("Logged out successfully.");
+                await userAccountsController.logoutUser({session, cookies}, new testHelper.pseudoRes(async function (resp2) {
+                    testHelper.expect(typeof resp2).to.equal('object');
+                    testHelper.expect(resp2.message).to.equal("Logged out successfully.");
                 }));
             }));
         });
