@@ -40,9 +40,9 @@ module.exports = {
             return res.status(404).send({error: "UserAccount not found."});
         }
 
-        const caller = UserAccount.findOne({where: {apiId: req.session.user.id}});
+        const caller = await authHelper.findApiCaller(req.session.user.id);
         if (!caller) {
-            return res.status(404).send({error: "API Caller account not found"});
+            return res.status(caller.status).send({error: caller.error});
         }
 
         const findOneUserResp = await axios.get(`${apiEndpoint}/user?userId=${apiId}&id=${apiId}`, {
