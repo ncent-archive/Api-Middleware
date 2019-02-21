@@ -4,7 +4,7 @@ const challengesController = require("../../../server/controllers/challenges.js"
 const testHelper = require("../../testHelper.js");
 
 module.exports = {
-    mocha: describe('Finding a single challenge', async function () {
+    mocha: describe('Finding all challenges', async function () {
         const session = testHelper.testSession;
         testHelper.createNockResponse("GET", "/challenge", {userId: 1}, 200, testHelper.findAllChallengesNockResp);
 
