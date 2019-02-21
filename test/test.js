@@ -3,3 +3,4 @@ const sendOtpTest = require('./integration/UserAccount/SendOtpTest.js');
 const userLoginTest = require('./integration/UserAccount/UserLoginTest.js');
 const findOneUserTest = require('./integration/UserAccount/FindOneUserTest.js');
 const createChallengeTest = require('./integration/Challenge/CreateChallengeTest.js');
+const findOneChallengeTest = require('./integration/Challenge/findOneChallengeTest.js');

@@ -1,6 +1,5 @@
 "use strict";
 
-const axios = require('axios');
 const apiEndpoint = "https://faw5rz7094.execute-api.us-west-1.amazonaws.com/development";
 const nock = require('nock');
 const expect = require('chai').expect;
@@ -18,12 +17,15 @@ class pseudoRes {
     constructor(callback) {
         this.sendCallback = callback;
     }
+
     status(val) {
         return this;
     }
+
     send(val) {
         return this.sendCallback(val);
     }
+
     clearCookie(name, options) {
         return "cookie cleared";
     }
@@ -32,7 +34,7 @@ class pseudoRes {
 const testCookies = {session_token: "some_token"};
 
 const testSession = {
-    destroy: function() {
+    destroy: function () {
         console.log("session deleted");
     },
     user: {
@@ -293,11 +295,11 @@ async function findAllUsers() {
 }
 
 async function deleteAllTestUsers() {
-    await UserAccount.destroy({ where: {} });
+    await UserAccount.destroy({where: {}});
 }
 
 function createNockResponse(reqType, path, queryParams, responseStatus, responseObj) {
-    switch(reqType) {
+    switch (reqType) {
         case reqTypes.GET:
             createNockGetResponse(path, queryParams, responseStatus, responseObj);
             break;

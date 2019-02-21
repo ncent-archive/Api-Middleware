@@ -10,13 +10,13 @@ axiosRetry(axios, {retries: 3, retryDelay: axiosRetry.exponentialDelay});
 module.exports = {
     async createChallenge (req, res) {
         const challengeNamespace = req.body.challengeNamespace;
-        const caller = await UserAccount.findOne({where: {apiId: req.session.user.id}});
-        if (!caller) {
-            return res.status(404).send({error: "API Caller account not found"});
+        const callerData = await authHelper.findApiCaller(req.session.user.id);
+        if (callerData.error) {
+            return res.status(callerData.status).send({error: callerData.error});
         }
 
-        const createChallengeResp = await axios.post(`${apiEndpoint}/challenge?userId=${caller.apiId}`, {
-            headers: {'Authorization': authHelper.getAuthString(caller.apiKey, caller.secretKey)},
+        const createChallengeResp = await axios.post(`${apiEndpoint}/challenge?userId=${callerData.apiId}`, {
+            headers: {'Authorization': authHelper.getAuthString(callerData.apiKey, callerData.secretKey)},
             data: {
                 challengeNamespace
             }
@@ -26,7 +26,17 @@ module.exports = {
     },
 
     async findOneChallenge (req, res) {
+        const challengeId = req.params.challengeId;
+        const callerData = await authHelper.findApiCaller(req.session.user.id);
+        if (callerData.error) {
+            return res.status(callerData.status).send({error: callerData.error});
+        }
 
+        const findOneChallengeResp = await axios.get(`${apiEndpoint}/challenge?id=${challengeId}&userId=${callerData.apiId}`, {
+            headers: {'Authorization': authHelper.getAuthString(callerData.apiKey, callerData.secretKey)}
+        });
+
+        return res.status(findOneChallengeResp.status).send(findOneChallengeResp.data);
     },
 
     async findAllChallenges (req, res) {
