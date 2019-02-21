@@ -205,6 +205,372 @@ const createChallengeNockResp = {
     }
 };
 
+const findAllChallengesNockResp = [ {
+    "createdAt" : "2019-01-24T12:36:40.088-08:00",
+    "updatedAt" : "null",
+    "deletedAt" : "null",
+    "parentChallenge" : "null",
+    "challengeSettings" : {
+        "createdAt" : "2019-01-24T12:36:40.083-08:00",
+        "updatedAt" : "null",
+        "deletedAt" : "null",
+        "name" : "TESTname0",
+        "description" : "TESTdescription0",
+        "imageUrl" : "TESTimageUrl0",
+        "sponsorName" : "TESTsponsorName0",
+        "expiration" : "2019-01-25T12:36:40.075-08:00",
+        "shareExpiration" : "2019-01-25T12:36:40.075-08:00",
+        "admin" : 1,
+        "offChain" : false,
+        "maxShares" : 100,
+        "maxRewards" : "null",
+        "maxDistributionFeeReward" : "null",
+        "maxSharesPerReceivedShare" : "null",
+        "maxDepth" : "null",
+        "maxNodes" : "null"
+    },
+    "subChallenges" : [ ],
+    "completionCriteria" : {
+        "createdAt" : "2019-01-24T12:36:40.088-08:00",
+        "updatedAt" : "null",
+        "deletedAt" : "null",
+        "address" : "[B@7af25dd1",
+        "reward" : {
+            "createdAt" : "2019-01-24T12:36:40.088-08:00",
+            "updatedAt" : "null",
+            "deletedAt" : "null",
+            "type" : {
+                "createdAt" : "2019-01-24T12:36:40.087-08:00",
+                "updatedAt" : "null",
+                "deletedAt" : "null",
+                "audience" : "PROVIDENCE",
+                "type" : "EVEN"
+            },
+            "pool" : {
+                "createdAt" : "2019-01-24T12:36:40.088-08:00",
+                "updatedAt" : "null",
+                "deletedAt" : "null",
+                "cryptoKeyPair" : {
+                    "createdAt" : "2019-01-24T12:36:40.088-08:00",
+                    "updatedAt" : "null",
+                    "deletedAt" : "null",
+                    "publicKey" : "[B@4b60eeb3"
+                },
+                "transactions" : [ ]
+            },
+            "metadatas" : [ ]
+        },
+        "prereq" : [ ]
+    },
+    "cryptoKeyPair" : {
+        "createdAt" : "2019-01-24T12:36:40.082-08:00",
+        "updatedAt" : "null",
+        "deletedAt" : "null",
+        "publicKey" : "[B@2d4292b7"
+    },
+    "distributionFeeReward" : {
+        "createdAt" : "2019-01-24T12:36:40.083-08:00",
+        "updatedAt" : "null",
+        "deletedAt" : "null",
+        "type" : {
+            "createdAt" : "2019-01-24T12:36:40.082-08:00",
+            "updatedAt" : "null",
+            "deletedAt" : "null",
+            "audience" : "PROVIDENCE",
+            "type" : "SINGLE"
+        },
+        "pool" : {
+            "createdAt" : "2019-01-24T12:36:40.083-08:00",
+            "updatedAt" : "null",
+            "deletedAt" : "null",
+            "cryptoKeyPair" : {
+                "createdAt" : "2019-01-24T12:36:40.082-08:00",
+                "updatedAt" : "null",
+                "deletedAt" : "null",
+                "publicKey" : "[B@1fc13c0e"
+            },
+            "transactions" : [ ]
+        },
+        "metadatas" : [ ]
+    }
+}, {
+    "createdAt" : "2019-01-24T12:36:40.118-08:00",
+    "updatedAt" : "null",
+    "deletedAt" : "null",
+    "parentChallenge" : "null",
+    "challengeSettings" : {
+        "createdAt" : "2019-01-24T12:36:40.113-08:00",
+        "updatedAt" : "null",
+        "deletedAt" : "null",
+        "name" : "TESTname2",
+        "description" : "TESTdescription2",
+        "imageUrl" : "TESTimageUrl2",
+        "sponsorName" : "TESTsponsorName2",
+        "expiration" : "2019-01-25T12:36:40.075-08:00",
+        "shareExpiration" : "2019-01-25T12:36:40.075-08:00",
+        "admin" : 1,
+        "offChain" : false,
+        "maxShares" : 100,
+        "maxRewards" : "null",
+        "maxDistributionFeeReward" : "null",
+        "maxSharesPerReceivedShare" : "null",
+        "maxDepth" : "null",
+        "maxNodes" : "null"
+    },
+    "subChallenges" : [ ],
+    "completionCriteria" : {
+        "createdAt" : "2019-01-24T12:36:40.118-08:00",
+        "updatedAt" : "null",
+        "deletedAt" : "null",
+        "address" : "[B@7af25dd1",
+        "reward" : {
+            "createdAt" : "2019-01-24T12:36:40.118-08:00",
+            "updatedAt" : "null",
+            "deletedAt" : "null",
+            "type" : {
+                "createdAt" : "2019-01-24T12:36:40.087-08:00",
+                "updatedAt" : "null",
+                "deletedAt" : "null",
+                "audience" : "PROVIDENCE",
+                "type" : "EVEN"
+            },
+            "pool" : {
+                "createdAt" : "2019-01-24T12:36:40.118-08:00",
+                "updatedAt" : "null",
+                "deletedAt" : "null",
+                "cryptoKeyPair" : {
+                    "createdAt" : "2019-01-24T12:36:40.117-08:00",
+                    "updatedAt" : "null",
+                    "deletedAt" : "null",
+                    "publicKey" : "[B@1891e690"
+                },
+                "transactions" : [ ]
+            },
+            "metadatas" : [ ]
+        },
+        "prereq" : [ ]
+    },
+    "cryptoKeyPair" : {
+        "createdAt" : "2019-01-24T12:36:40.112-08:00",
+        "updatedAt" : "null",
+        "deletedAt" : "null",
+        "publicKey" : "[B@5b98d389"
+    },
+    "distributionFeeReward" : {
+        "createdAt" : "2019-01-24T12:36:40.113-08:00",
+        "updatedAt" : "null",
+        "deletedAt" : "null",
+        "type" : {
+            "createdAt" : "2019-01-24T12:36:40.082-08:00",
+            "updatedAt" : "null",
+            "deletedAt" : "null",
+            "audience" : "PROVIDENCE",
+            "type" : "SINGLE"
+        },
+        "pool" : {
+            "createdAt" : "2019-01-24T12:36:40.113-08:00",
+            "updatedAt" : "null",
+            "deletedAt" : "null",
+            "cryptoKeyPair" : {
+                "createdAt" : "2019-01-24T12:36:40.112-08:00",
+                "updatedAt" : "null",
+                "deletedAt" : "null",
+                "publicKey" : "[B@2ba5529a"
+            },
+            "transactions" : [ ]
+        },
+        "metadatas" : [ ]
+    }
+}, {
+    "createdAt" : "2019-01-24T12:36:40.134-08:00",
+    "updatedAt" : "2019-01-24T12:36:40.137-08:00",
+    "deletedAt" : "null",
+    "parentChallenge" : "1",
+    "challengeSettings" : {
+        "createdAt" : "2019-01-24T12:36:40.128-08:00",
+        "updatedAt" : "null",
+        "deletedAt" : "null",
+        "name" : "TESTname0",
+        "description" : "TESTdescription0",
+        "imageUrl" : "TESTimageUrl0",
+        "sponsorName" : "TESTsponsorName0",
+        "expiration" : "2019-01-25T12:36:40.120-08:00",
+        "shareExpiration" : "2019-01-25T12:36:40.120-08:00",
+        "admin" : 1,
+        "offChain" : false,
+        "maxShares" : 100,
+        "maxRewards" : "null",
+        "maxDistributionFeeReward" : "null",
+        "maxSharesPerReceivedShare" : "null",
+        "maxDepth" : "null",
+        "maxNodes" : "null"
+    },
+    "subChallenges" : [ {
+        "createdAt" : "2019-01-24T12:36:40.134-08:00",
+        "updatedAt" : "2019-01-24T12:36:40.137-08:00",
+        "deletedAt" : "null",
+        "subChallengeId" : 1,
+        "type" : "SYNC"
+    }, {
+        "createdAt" : "2019-01-24T12:36:40.134-08:00",
+        "updatedAt" : "2019-01-24T12:36:40.137-08:00",
+        "deletedAt" : "null",
+        "subChallengeId" : 2,
+        "type" : "ASYNC"
+    } ],
+    "completionCriteria" : {
+        "createdAt" : "2019-01-24T12:36:40.134-08:00",
+        "updatedAt" : "null",
+        "deletedAt" : "null",
+        "address" : "[B@7af25dd1",
+        "reward" : {
+            "createdAt" : "2019-01-24T12:36:40.134-08:00",
+            "updatedAt" : "null",
+            "deletedAt" : "null",
+            "type" : {
+                "createdAt" : "2019-01-24T12:36:40.087-08:00",
+                "updatedAt" : "null",
+                "deletedAt" : "null",
+                "audience" : "PROVIDENCE",
+                "type" : "EVEN"
+            },
+            "pool" : {
+                "createdAt" : "2019-01-24T12:36:40.133-08:00",
+                "updatedAt" : "null",
+                "deletedAt" : "null",
+                "cryptoKeyPair" : {
+                    "createdAt" : "2019-01-24T12:36:40.133-08:00",
+                    "updatedAt" : "null",
+                    "deletedAt" : "null",
+                    "publicKey" : "[B@5878544f"
+                },
+                "transactions" : [ ]
+            },
+            "metadatas" : [ ]
+        },
+        "prereq" : [ ]
+    },
+    "cryptoKeyPair" : {
+        "createdAt" : "2019-01-24T12:36:40.128-08:00",
+        "updatedAt" : "null",
+        "deletedAt" : "null",
+        "publicKey" : "[B@dedad8a"
+    },
+    "distributionFeeReward" : {
+        "createdAt" : "2019-01-24T12:36:40.128-08:00",
+        "updatedAt" : "null",
+        "deletedAt" : "null",
+        "type" : {
+            "createdAt" : "2019-01-24T12:36:40.082-08:00",
+            "updatedAt" : "null",
+            "deletedAt" : "null",
+            "audience" : "PROVIDENCE",
+            "type" : "SINGLE"
+        },
+        "pool" : {
+            "createdAt" : "2019-01-24T12:36:40.128-08:00",
+            "updatedAt" : "null",
+            "deletedAt" : "null",
+            "cryptoKeyPair" : {
+                "createdAt" : "2019-01-24T12:36:40.128-08:00",
+                "updatedAt" : "null",
+                "deletedAt" : "null",
+                "publicKey" : "[B@5c58467e"
+            },
+            "transactions" : [ ]
+        },
+        "metadatas" : [ ]
+    }
+}, {
+    "createdAt" : "2019-01-24T12:36:40.103-08:00",
+    "updatedAt" : "null",
+    "deletedAt" : "null",
+    "parentChallenge" : "null",
+    "challengeSettings" : {
+        "createdAt" : "2019-01-24T12:36:40.097-08:00",
+        "updatedAt" : "null",
+        "deletedAt" : "null",
+        "name" : "TESTname1",
+        "description" : "TESTdescription1",
+        "imageUrl" : "TESTimageUrl1",
+        "sponsorName" : "TESTsponsorName1",
+        "expiration" : "2019-01-25T12:36:40.075-08:00",
+        "shareExpiration" : "2019-01-25T12:36:40.075-08:00",
+        "admin" : 1,
+        "offChain" : false,
+        "maxShares" : 100,
+        "maxRewards" : "null",
+        "maxDistributionFeeReward" : "null",
+        "maxSharesPerReceivedShare" : "null",
+        "maxDepth" : "null",
+        "maxNodes" : "null"
+    },
+    "subChallenges" : [ ],
+    "completionCriteria" : {
+        "createdAt" : "2019-01-24T12:36:40.103-08:00",
+        "updatedAt" : "null",
+        "deletedAt" : "null",
+        "address" : "[B@7af25dd1",
+        "reward" : {
+            "createdAt" : "2019-01-24T12:36:40.103-08:00",
+            "updatedAt" : "null",
+            "deletedAt" : "null",
+            "type" : {
+                "createdAt" : "2019-01-24T12:36:40.087-08:00",
+                "updatedAt" : "null",
+                "deletedAt" : "null",
+                "audience" : "PROVIDENCE",
+                "type" : "EVEN"
+            },
+            "pool" : {
+                "createdAt" : "2019-01-24T12:36:40.103-08:00",
+                "updatedAt" : "null",
+                "deletedAt" : "null",
+                "cryptoKeyPair" : {
+                    "createdAt" : "2019-01-24T12:36:40.102-08:00",
+                    "updatedAt" : "null",
+                    "deletedAt" : "null",
+                    "publicKey" : "[B@5c65872d"
+                },
+                "transactions" : [ ]
+            },
+            "metadatas" : [ ]
+        },
+        "prereq" : [ ]
+    },
+    "cryptoKeyPair" : {
+        "createdAt" : "2019-01-24T12:36:40.097-08:00",
+        "updatedAt" : "null",
+        "deletedAt" : "null",
+        "publicKey" : "[B@3f02c814"
+    },
+    "distributionFeeReward" : {
+        "createdAt" : "2019-01-24T12:36:40.098-08:00",
+        "updatedAt" : "null",
+        "deletedAt" : "null",
+        "type" : {
+            "createdAt" : "2019-01-24T12:36:40.082-08:00",
+            "updatedAt" : "null",
+            "deletedAt" : "null",
+            "audience" : "PROVIDENCE",
+            "type" : "SINGLE"
+        },
+        "pool" : {
+            "createdAt" : "2019-01-24T12:36:40.097-08:00",
+            "updatedAt" : "null",
+            "deletedAt" : "null",
+            "cryptoKeyPair" : {
+                "createdAt" : "2019-01-24T12:36:40.097-08:00",
+                "updatedAt" : "null",
+                "deletedAt" : "null",
+                "publicKey" : "[B@713c2b07"
+            },
+            "transactions" : [ ]
+        },
+        "metadatas" : [ ]
+    }
+} ];
+
 const findOneUserNockResp = {
     "id": 1,
     "createdAt": "2019-02-18T22:34:51.000Z",
@@ -366,6 +732,7 @@ module.exports = {
     createNockResponse,
     createChallengeReqBody,
     createChallengeNockResp,
+    findAllChallengesNockResp,
     createUserReqBody,
     findOneUserNockResp,
     createUserNockResp

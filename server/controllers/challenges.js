@@ -40,7 +40,16 @@ module.exports = {
     },
 
     async findAllChallenges (req, res) {
+        const callerData = await authHelper.findApiCaller(req.session.user.id);
+        if (callerData.error) {
+            return res.status(callerData.status).send({error: callerData.error});
+        }
 
+        const findAllChallengesResp = await axios.get(`${apiEndpoint}/challenge?userId=${callerData.apiId}`, {
+            headers: {'Authorization': authHelper.getAuthString(callerData.apiKey, callerData.secretKey)}
+        });
+
+        return res.status(findAllChallengesResp.status).send(findAllChallengesResp.data);
     },
 
     async findAllBalancesForChallenge (req, res) {
