@@ -121,6 +121,17 @@ module.exports = {
     },
 
     async findAllBalancesForUser(req, res) {
+        const caller = await authHelper.findApiCaller(req.session.user.id);
+        if (!caller) {
+            return res.status(caller.status).send({error: caller.error});
+        }
 
+        const findAllBalancesForUserResp = await axios.get(`${apiEndpoint}/user/balances?userId=${req.session.user.id}`, {
+            headers: {
+                'Authorization': authHelper.getAuthString(caller.apiKey, caller.secretKey)
+            }
+        });
+
+        return res.status(findAllBalancesForUserResp.status).send(findAllBalancesForUserResp.data);
     }
 };

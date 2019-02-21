@@ -5,3 +5,4 @@ const findOneUserTest = require('./integration/UserAccount/FindOneUserTest.js');
 const createChallengeTest = require('./integration/Challenge/CreateChallengeTest.js');
 const findOneChallengeTest = require('./integration/Challenge/FindOneChallengeTest.js');
 const findAllChallengesTest = require("./integration/Challenge/FindAllChallengesTest.js");
+const findAllBalancesForUserTest = require('./integration/UserAccount/FindAllBalancesForUser.js');
