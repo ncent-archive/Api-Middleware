@@ -53,7 +53,16 @@ module.exports = {
     },
 
     async findAllBalancesForChallenge (req, res) {
+        const callerData = await authHelper.findApiCaller(req.session.user.id);
+        if (callerData.error) {
+            return res.status(callerData.status).send({error: callerData.error});
+        }
 
+        const findAllBalancesForChallengeResp = await axios.get(`${apiEndpoint}/challenge/balances?userId=${callerData.apiId}&id=${req.params.challengeId}`, {
+            headers: {'Authorization': authHelper.getAuthString(callerData.apiKey, callerData.secretKey)}
+        });
+
+        return res.status(findAllBalancesForChallengeResp.status).send(findAllBalancesForChallengeResp.data);
     },
 
     async shareChallenge (req, res) {

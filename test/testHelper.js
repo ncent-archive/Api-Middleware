@@ -1163,6 +1163,14 @@ const findOneUserNockResp = {
     }
 };
 
+const findAllBalancesForChallengeNockResp = {
+    "challengeId": 4,
+    "emailToChallengeBalances": {
+        "dev1@ncnt.io": 2,
+        "dev0@ncnt.io": 98
+    }
+};
+
 const createUserNockResp = {
     "value": {
         "id": 1,
@@ -1291,6 +1299,7 @@ module.exports = {
     deleteAllTestUsers,
     findAllUsers,
     findAllBalancesForUserNockResp,
+    findAllBalancesForChallengeNockResp,
     createNockResponse,
     createChallengeReqBody,
     createChallengeNockResp,
