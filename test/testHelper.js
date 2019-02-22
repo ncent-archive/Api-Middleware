@@ -103,6 +103,24 @@ const createChallengeReqBody = {
     }
 };
 
+const shareChallengeReqBody = {
+    "challengeId": 1,
+    "publicKeyToShareWith": "some_public_key",
+    "shares": 5,
+    "emailToShareWith": "dev10@ncnt.io",
+    "expiration": Date.now() + 300000
+};
+
+const redeemChallengeReqBody = {
+    "completerPublicKey": "some_public_key",
+    "challengeId": 1
+};
+
+const completeChallengeReqBody = {
+    "completerPublicKey": "some_public_key",
+    "challengeId": 1
+};
+
 const createChallengeNockResp = {
     "id": 1,
     "createdAt": "2019-02-20T19:26:12.396Z",
@@ -1171,6 +1189,170 @@ const findAllBalancesForChallengeNockResp = {
     }
 };
 
+const shareChallengeNockResp = {
+    "transactions" : [ {
+        "createdAt" : "2019-01-24T20:36:46.377Z",
+        "updatedAt" : "null",
+        "deletedAt" : "null",
+        "from" : "[B@248fa38f",
+        "to" : "[B@14a5ac9f",
+        "action" : {
+            "createdAt" : "2019-01-24T20:36:46.376Z",
+            "updatedAt" : "null",
+            "deletedAt" : "null",
+            "type" : "SHARE",
+            "data" : 4,
+            "dataType" : "Challenge"
+        },
+        "previousTransactionId" : "10",
+        "metadatas" : [ {
+            "createdAt" : "2019-01-24T20:36:46.377Z",
+            "updatedAt" : "null",
+            "deletedAt" : "null",
+            "key" : "challengeId",
+            "value" : "4"
+        }, {
+            "createdAt" : "2019-01-24T20:36:46.377Z",
+            "updatedAt" : "null",
+            "deletedAt" : "null",
+            "key" : "offChain",
+            "value" : "false"
+        }, {
+            "createdAt" : "2019-01-24T20:36:46.377Z",
+            "updatedAt" : "null",
+            "deletedAt" : "null",
+            "key" : "shareExpiration",
+            "value" : "2019-01-25T12:36:46.353-08:00"
+        }, {
+            "createdAt" : "2019-01-24T20:36:46.377Z",
+            "updatedAt" : "null",
+            "deletedAt" : "null",
+            "key" : "maxShares",
+            "value" : "3"
+        } ]
+    } ]
+};
+
+const redeemChallengeNockResp = {
+    "transactions" : [ {
+        "createdAt" : "2019-01-24T20:36:37.630Z",
+        "updatedAt" : "null",
+        "deletedAt" : "null",
+        "from" : "[B@cf9a52a",
+        "to" : "[B@441a52ec",
+        "action" : {
+            "createdAt" : "2019-01-24T20:36:37.629Z",
+            "updatedAt" : "null",
+            "deletedAt" : "null",
+            "type" : "PAYOUT",
+            "data" : 1,
+            "dataType" : "Token"
+        },
+        "previousTransactionId" : "null",
+        "metadatas" : [ {
+            "createdAt" : "2019-01-24T20:36:37.629Z",
+            "updatedAt" : "null",
+            "deletedAt" : "null",
+            "key" : "amount",
+            "value" : "5.0"
+        }, {
+            "createdAt" : "2019-01-24T20:36:37.629Z",
+            "updatedAt" : "null",
+            "deletedAt" : "null",
+            "key" : "notes",
+            "value" : "Reward distribution"
+        } ]
+    }, {
+        "createdAt" : "2019-01-24T20:36:37.631Z",
+        "updatedAt" : "null",
+        "deletedAt" : "null",
+        "from" : "[B@cf9a52a",
+        "to" : "[B@4fedba92",
+        "action" : {
+            "createdAt" : "2019-01-24T20:36:37.631Z",
+            "updatedAt" : "null",
+            "deletedAt" : "null",
+            "type" : "PAYOUT",
+            "data" : 1,
+            "dataType" : "Token"
+        },
+        "previousTransactionId" : "null",
+        "metadatas" : [ {
+            "createdAt" : "2019-01-24T20:36:37.631Z",
+            "updatedAt" : "null",
+            "deletedAt" : "null",
+            "key" : "amount",
+            "value" : "5.0"
+        }, {
+            "createdAt" : "2019-01-24T20:36:37.631Z",
+            "updatedAt" : "null",
+            "deletedAt" : "null",
+            "key" : "notes",
+            "value" : "Reward distribution"
+        } ]
+    } ]
+};
+
+const completeChallengeNockResp = {
+    "transactions" : [ {
+        "createdAt" : "2019-01-24T20:36:36.785Z",
+        "updatedAt" : "null",
+        "deletedAt" : "null",
+        "from" : "[B@2adfdec6",
+        "to" : "[B@43850325",
+        "action" : {
+            "createdAt" : "2019-01-24T20:36:36.784Z",
+            "updatedAt" : "null",
+            "deletedAt" : "null",
+            "type" : "PAYOUT",
+            "data" : 1,
+            "dataType" : "Token"
+        },
+        "previousTransactionId" : "null",
+        "metadatas" : [ {
+            "createdAt" : "2019-01-24T20:36:36.784Z",
+            "updatedAt" : "null",
+            "deletedAt" : "null",
+            "key" : "amount",
+            "value" : "5.0"
+        }, {
+            "createdAt" : "2019-01-24T20:36:36.784Z",
+            "updatedAt" : "null",
+            "deletedAt" : "null",
+            "key" : "notes",
+            "value" : "Reward distribution"
+        } ]
+    }, {
+        "createdAt" : "2019-01-24T20:36:36.786Z",
+        "updatedAt" : "null",
+        "deletedAt" : "null",
+        "from" : "[B@2adfdec6",
+        "to" : "[B@7ac9b3cb",
+        "action" : {
+            "createdAt" : "2019-01-24T20:36:36.786Z",
+            "updatedAt" : "null",
+            "deletedAt" : "null",
+            "type" : "PAYOUT",
+            "data" : 1,
+            "dataType" : "Token"
+        },
+        "previousTransactionId" : "null",
+        "metadatas" : [ {
+            "createdAt" : "2019-01-24T20:36:36.786Z",
+            "updatedAt" : "null",
+            "deletedAt" : "null",
+            "key" : "amount",
+            "value" : "5.0"
+        }, {
+            "createdAt" : "2019-01-24T20:36:36.786Z",
+            "updatedAt" : "null",
+            "deletedAt" : "null",
+            "key" : "notes",
+            "value" : "Reward distribution"
+        } ]
+    } ]
+};
+
 const createUserNockResp = {
     "value": {
         "id": 1,
@@ -1306,5 +1488,11 @@ module.exports = {
     findAllChallengesNockResp,
     createUserReqBody,
     findOneUserNockResp,
-    createUserNockResp
+    createUserNockResp,
+    shareChallengeNockResp,
+    shareChallengeReqBody,
+    redeemChallengeNockResp,
+    redeemChallengeReqBody,
+    completeChallengeNockResp,
+    completeChallengeReqBody
 };

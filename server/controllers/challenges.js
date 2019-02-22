@@ -1,7 +1,6 @@
 "use strict";
 
 const apiEndpoint = "https://faw5rz7094.execute-api.us-west-1.amazonaws.com/development";
-const UserAccount = require('../models').UserAccount;
 const axios = require("axios");
 const axiosRetry = require("axios-retry");
 const authHelper = require("../helpers/authHelper.js");
@@ -66,14 +65,62 @@ module.exports = {
     },
 
     async shareChallenge (req, res) {
+        const {challengeId, publicKeyToShareWith, shares, expiration, emailToShareWith} = req.body;
 
+        const callerData = await authHelper.findApiCaller(req.session.user.id);
+        if (callerData.error) {
+            return res.status(callerData.status).send({error: callerData.error});
+        }
+
+        const shareChallengeResp = await axios.put(`${apiEndpoint}/challenge/share?userId=${callerData.apiId}`, {
+            headers: {'Authorization': authHelper.getAuthString(callerData.apiKey, callerData.secretKey)},
+            data: {
+                challengeId,
+                publicKeyToShareWith,
+                shares,
+                expiration,
+                emailToShareWith
+            }
+        });
+
+        return res.status(shareChallengeResp.status).send(shareChallengeResp.data);
     },
 
     async redeemChallenge (req, res) {
+        const {challengeId, completerPublicKey} = req.body;
 
+        const callerData = await authHelper.findApiCaller(req.session.user.id);
+        if (callerData.error) {
+            return res.status(callerData.status).send({error: callerData.error});
+        }
+
+        const redeemChallengeResp = await axios.put(`${apiEndpoint}/challenge/redeem?userId=${callerData.apiId}`, {
+            headers: {'Authorization': authHelper.getAuthString(callerData.apiKey, callerData.secretKey)},
+            data: {
+                challengeId,
+                completerPublicKey
+            }
+        });
+
+        return res.status(redeemChallengeResp.status).send(redeemChallengeResp.data);
     },
 
     async completeChallenge (req, res) {
+        const {challengeId, completerPublicKey} = req.body;
 
+        const callerData = await authHelper.findApiCaller(req.session.user.id);
+        if (callerData.error) {
+            return res.status(callerData.status).send({error: callerData.error});
+        }
+
+        const completeChallengeResp = await axios.put(`${apiEndpoint}/challenge/complete?userId=${callerData.apiId}`, {
+            headers: {'Authorization': authHelper.getAuthString(callerData.apiKey, callerData.secretKey)},
+            data: {
+                challengeId,
+                completerPublicKey
+            }
+        });
+
+        return res.status(completeChallengeResp.status).send(completeChallengeResp.data);
     }
 };

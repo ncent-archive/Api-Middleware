@@ -7,3 +7,6 @@ const findOneChallengeTest = require('./integration/Challenge/FindOneChallengeTe
 const findAllChallengesTest = require("./integration/Challenge/FindAllChallengesTest.js");
 const findAllBalancesForUserTest = require('./integration/UserAccount/FindAllBalancesForUser.js');
 const findAllBalancesForChallengeTest = require('./integration/Challenge/FindAllBalancesForChallengeTest.js');
+const shareChallengeTest = require('./integration/Challenge/ShareChallengeTest.js');
+const redeemChallengeTest = require('./integration/Challenge/RedeemChallengeTest.js');
+const completeChallengeTest = require('./integration/Challenge/CompleteChallengeTest.js');
