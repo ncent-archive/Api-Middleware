@@ -4,6 +4,9 @@ const apiEndpoint = "https://faw5rz7094.execute-api.us-west-1.amazonaws.com/deve
 const axios = require("axios");
 const axiosRetry = require("axios-retry");
 const authHelper = require("../helpers/authHelper.js");
+const voucherCodes = require('voucher-code-generator');
+const ChallengeParticipant = require('../models').ChallengeParticipant;
+const UserAccount = require('../models').UserAccount;
 axiosRetry(axios, {retries: 3, retryDelay: axiosRetry.exponentialDelay});
 
 module.exports = {
@@ -122,5 +125,49 @@ module.exports = {
         });
 
         return res.status(completeChallengeResp.status).send(completeChallengeResp.data);
+    },
+
+    async createReferralCode (req, res) {
+        const challengeId = req.params.challengeId;
+
+        const callerData = await authHelper.findApiCaller(req.session.user.id);
+        if (callerData.error) {
+            return res.status(callerData.status).send({error: callerData.error});
+        }
+
+        const user = await UserAccount.findOne({where: {apiId: req.session.user.id}});
+
+        const findOneChallengeResp = await axios.get(`${apiEndpoint}/challenge?id=${challengeId}&userId=${callerData.apiId}`, {
+            headers: {'Authorization': authHelper.getAuthString(callerData.apiKey, callerData.secretKey)}
+        });
+
+        const challenge = findOneChallengeResp.data;
+
+        const referralCode = voucherCodes.generate({
+            prefix: `${challenge.challengeSettings.name}-`,
+            postfix: `-${challenge.challengeSettings.sponsorName}`
+        });
+
+        const challengeParticipant = await ChallengeParticipant.create({
+            userId: user.id,
+            challengeId,
+            referralCode: referralCode[0]
+        });
+
+        return res.status(200).send({challengeParticipant});
+    },
+
+    async retrieveReferralCode (req, res) {
+        const challengeId = req.params.challengeId;
+        const user = await UserAccount.findOne({where: {apiId: req.session.user.id}});
+        const userId = user.id;
+
+        const challengeParticipant = await ChallengeParticipant.findOne({where: {challengeId, userId}});
+
+        if (!challengeParticipant) {
+            return res.status(404).send({error: "Referral Code not found"});
+        }
+
+        return res.status(200).send({challengeParticipantId:});
     }
 };
