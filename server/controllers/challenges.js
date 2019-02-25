@@ -168,6 +168,6 @@ module.exports = {
             return res.status(404).send({error: "Referral Code not found"});
         }
 
-        return res.status(200).send({challengeParticipantId:});
+        return res.status(200).send({challengeParticipant});
     }
 };
