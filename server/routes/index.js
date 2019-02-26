@@ -49,4 +49,10 @@ module.exports = (app) => {
 
     //completes a challenge by redeeming for a participant - triggered by the sponsor only
     app.patch("/api/challenges/complete", challengesController.completeChallenge);
+
+    //creates a unique code for a user participating in a challenge
+    app.post("/api/challenges/referralCode", challengesController.createReferralCode);
+
+    //retrieve's a user's unique challenge referral code
+    app.get("/api/challenges/referralCode", challengesController.retrieveReferralCode);
 };
