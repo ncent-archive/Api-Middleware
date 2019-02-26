@@ -42,7 +42,8 @@ module.exports = {
     },
 
     async findAllChallenges (req, res) {
-        const callerData = await authHelper.findApiCaller(req.session.user.id);
+        // const callerData = await authHelper.findApiCaller(req.session.user.id);
+        const callerData = await authHelper.findApiCaller(1);
         if (callerData.error) {
             return res.status(callerData.status).send({error: callerData.error});
         }
