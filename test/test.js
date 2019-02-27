@@ -1,5 +1,4 @@
 const userCreationTest = require('./integration/UserAccount/UserCreationTest.js');
-const sendOtpTest = require('./integration/UserAccount/SendOtpTest.js');
 const userLoginTest = require('./integration/UserAccount/UserLoginTest.js');
 const findOneUserTest = require('./integration/UserAccount/FindOneUserTest.js');
 const createChallengeTest = require('./integration/Challenge/CreateChallengeTest.js');
@@ -10,3 +9,4 @@ const findAllBalancesForChallengeTest = require('./integration/Challenge/FindAll
 const shareChallengeTest = require('./integration/Challenge/ShareChallengeTest.js');
 const redeemChallengeTest = require('./integration/Challenge/RedeemChallengeTest.js');
 const completeChallengeTest = require('./integration/Challenge/CompleteChallengeTest.js');
+const verifyOrCreateTest = require('./integration/UserAccount/VerifyOrCreateTest.js');

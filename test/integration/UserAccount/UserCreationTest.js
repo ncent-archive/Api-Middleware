@@ -14,8 +14,8 @@ module.exports = {
         it('should return a valid user with proper parameters', async function () {
             await userAccountsController.createUser({body}, new testHelper.pseudoRes(async function (resp) {
                 testHelper.expect(typeof resp).to.equal('object');
-                testHelper.expect(resp.userMetadata.email).to.equal('dev@ncnt.io');
-                testHelper.expect(resp.userMetadata.firstname).to.equal('dev');
+                testHelper.expect(resp.userMetadata.email).to.equal('dev1@ncnt.io');
+                testHelper.expect(resp.userMetadata.firstname).to.equal('dev1');
                 testHelper.expect(resp.userMetadata.lastname).to.equal('ncnt');
             }));
         });
