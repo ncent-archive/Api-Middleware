@@ -23,6 +23,7 @@ module.exports = {
         await UserAccount.create({
             apiId: newUser.value.id,
             apiKey: newUser.value.apiCreds.apiKey,
+            email: email,
             secretKey: newUser.secretKey,
             publicKey: newUser.value.cryptoKeyPair.publicKey,
             privateKey: newUser.privateKey,
@@ -52,32 +53,6 @@ module.exports = {
         });
 
         return res.status(findOneUserResp.status).send(findOneUserResp.data);
-    },
-
-    async sendOTP(req, res) {
-        const apiId = req.params.userId;
-        const otpKey = otplib.authenticator.generateSecret();
-        const token = otplib.authenticator.generate(otpKey);
-        const otpExp = Date.now() + 300000;
-        const salt = bcrypt.genSaltSync();
-        const tokenHash = bcrypt.hashSync(token, salt);
-
-        const user = await UserAccount.findOne({where: {apiId}});
-
-        if (!user) {
-            return res.status(404).send({error: "UserAccount not found."});
-        }
-
-        const findUserResp = await axios.get(`${apiEndpoint}/user?userId=${apiId}&id=${apiId}`);
-        const email = findUserResp.data.userMetadata.email;
-
-        await user.updateAttributes({
-            otpKey: tokenHash,
-            otpExp: otpExp
-        });
-
-        awsEmail.sendOTP(email, token);
-        return res.status(200).send({message: "Passcode successfully sent to user"});
     },
 
     async loginUser(req, res) {
@@ -133,5 +108,44 @@ module.exports = {
         });
 
         return res.status(findAllBalancesForUserResp.status).send(findAllBalancesForUserResp.data);
+    },
+
+    async verifyOrCreate(req, res) {
+        let user;
+        const {email, firstname, lastname} = req.body;
+        const createUserResponse = await axios.post(`${apiEndpoint}/user`, {
+            email,
+            firstname,
+            lastname
+        });
+
+        if (createUserResponse.status === 200) {
+            const newUser = createUserResponse.data;
+            user = await UserAccount.create({
+                apiId: newUser.value.id,
+                apiKey: newUser.value.apiCreds.apiKey,
+                email: email,
+                secretKey: newUser.secretKey,
+                publicKey: newUser.value.cryptoKeyPair.publicKey,
+                privateKey: newUser.privateKey,
+                active: false
+            });
+        } else {
+            user = await UserAccount.findOne({where: {email}});
+        }
+
+        const otpKey = otplib.authenticator.generateSecret();
+        const token = otplib.authenticator.generate(otpKey);
+        const otpExp = Date.now() + 300000;
+        const salt = bcrypt.genSaltSync();
+        const tokenHash = bcrypt.hashSync(token, salt);
+
+        await user.updateAttributes({
+            otpKey: tokenHash,
+            otpExp: otpExp
+        });
+
+        awsEmail.sendOTP(email, token);
+        return res.status(200).send({user});
     }
 };

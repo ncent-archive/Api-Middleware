@@ -14,8 +14,8 @@ module.exports = (app) => {
     //retrieves one user account
     app.get("/api/users/:userId", userAccountsController.findOneUser);
 
-    //sends a one-time passcode to the user for login
-    app.post("/api/users/:userId", userAccountsController.sendOTP);
+    //sends a one-time passcode to the user for login and also creates their account if they do not exist
+    app.post("/api/users/verify", userAccountsController.verifyOrCreate);
 
     //logs a user in and begins their session
     app.post("/api/users/login", userAccountsController.loginUser);
@@ -51,8 +51,8 @@ module.exports = (app) => {
     app.patch("/api/challenges/complete", challengesController.completeChallenge);
 
     //creates a unique code for a user participating in a challenge
-    app.post("/api/challenges/referralCode", challengesController.createReferralCode);
+    app.post("/api/challenges/referralCode/:challengeId", challengesController.createReferralCode);
 
     //retrieve's a user's unique challenge referral code
-    app.get("/api/challenges/referralCode", challengesController.retrieveReferralCode);
+    app.get("/api/challenges/referralCode/:challengeId", challengesController.retrieveReferralCode);
 };
