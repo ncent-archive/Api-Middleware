@@ -146,8 +146,8 @@ module.exports = {
         const challenge = findOneChallengeResp.data;
 
         const referralCode = voucherCodes.generate({
-            prefix: `${challenge.challengeSettings.name}-`,
-            postfix: `-${challenge.challengeSettings.sponsorName}`
+            prefix: `${challenge.challengeSettings.name.replace(" ", "_")}`,
+            postfix: `${challenge.challengeSettings.sponsorName.replace(" ", "_")}`
         });
 
         const challengeParticipant = await ChallengeParticipant.create({

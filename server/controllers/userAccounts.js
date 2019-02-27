@@ -10,8 +10,8 @@ const axiosRetry = require("axios-retry");
 const authHelper = require("../helpers/authHelper.js");
 axiosRetry(axios, {retries: 3, retryDelay: axiosRetry.exponentialDelay});
 
-async function verifyOrCreateHelper(user, res) {
-    console.log("\n\n\ncreateUserResponse created in verifyOrCreate api", user, "\n\n\n");
+async function verifyOrCreateHelper(user, res, email) {
+    console.log("\n\n\ncreateUserResponse created in verifyOrCreate api", user.dataValues, "\n\n\n");
 
     const otpKey = otplib.authenticator.generateSecret();
     const token = otplib.authenticator.generate(otpKey);
@@ -24,8 +24,9 @@ async function verifyOrCreateHelper(user, res) {
         otpExp: otpExp
     });
 
-    awsEmail.sendOTP(email, token);
-    console.log("\n\n\nverifyOrcreate about to return user in api\n\n\n", user);
+    let response = await awsEmail.sendOTP(email, token);
+    console.log("aws response", response);
+    console.log("\n\n\nverifyOrcreateHelper about to return user in api\n\n\n", user);
     return res.status(200).send(user);
 }
 
@@ -91,7 +92,11 @@ module.exports = {
         const expired = Date.now() > user.otpExp;
         const validCode = bcrypt.compareSync(confirmationCode, user.otpKey) && !expired;
 
-        const findUserResp = await axios.get(`${apiEndpoint}/user?userId=${apiId}&id=${apiId}`);
+        const findUserResp = await axios.get(`${apiEndpoint}/user?userId=${apiId}&id=${apiId}`, {
+            headers: {
+                'Authorization': authHelper.getAuthString(user.apiKey, user.secretKey)
+            }
+        });
 
         if (validCode) {
             await user.updateAttributes({active: true});
@@ -159,13 +164,13 @@ module.exports = {
                 privateKey: newUser.privateKey,
                 active: false
             });
-            verifyOrCreateHelper(user, res);
+            verifyOrCreateHelper(user, res, email);
         })
         .catch(async err => {
             // console.log("\n\n\n.catch in post", err);
             console.log("\n\n\nelse case scenario in userAccounts, verifyOrCreate, api\n\n\n");
             user = await UserAccount.findOne({ where: { email } });
-            verifyOrCreateHelper(user, res);
+            verifyOrCreateHelper(user, res, email);
         });
     }
 };
