@@ -81,7 +81,7 @@ module.exports = {
     },
 
     async loginUser(req, res) {
-        const apiId = req.params.userId;
+        const apiId = req.body.userId;
         const confirmationCode = req.body.code;
 
         const user = await UserAccount.findOne({ where: {apiId} });
