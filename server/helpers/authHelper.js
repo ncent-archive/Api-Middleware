@@ -12,7 +12,7 @@ module.exports = {
         if (!caller) {
             return {status: 404, error: "API Caller account not found"};
         }
-
+        // console.log("findApiCaller in authHelper.js in api-middleware, user is", caller);
         return caller;
     }
 };
