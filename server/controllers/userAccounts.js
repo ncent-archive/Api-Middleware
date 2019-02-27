@@ -10,8 +10,28 @@ const axiosRetry = require("axios-retry");
 const authHelper = require("../helpers/authHelper.js");
 axiosRetry(axios, {retries: 3, retryDelay: axiosRetry.exponentialDelay});
 
+async function verifyOrCreateHelper(user, res) {
+    console.log("\n\n\ncreateUserResponse created in verifyOrCreate api", user, "\n\n\n");
+
+    const otpKey = otplib.authenticator.generateSecret();
+    const token = otplib.authenticator.generate(otpKey);
+    const otpExp = Date.now() + 300000;
+    const salt = bcrypt.genSaltSync();
+    const tokenHash = bcrypt.hashSync(token, salt);
+
+    await user.updateAttributes({
+        otpKey: tokenHash,
+        otpExp: otpExp
+    });
+
+    awsEmail.sendOTP(email, token);
+    console.log("\n\n\nverifyOrcreate about to return user in api\n\n\n", user);
+    return res.status(200).send(user);
+}
+
 module.exports = {
     async createUser(req, res) {
+        console.log("\n\n\nhit createUser in userAccounts.js in api\n\n\n");
         const {email, firstname, lastname} = req.body;
         const createUserResponse = await axios.post(`${apiEndpoint}/user`, {
             email,
@@ -34,6 +54,7 @@ module.exports = {
     },
 
     async findOneUser(req, res) {
+        console.log("\n\n\nhit findOneUser in userAccounts.js in api\n\n\n");
         const apiId = req.params.userId;
         const user = UserAccount.findOne({where: {apiId}});
 
@@ -59,6 +80,8 @@ module.exports = {
         const apiId = req.body.userId;
         const confirmationCode = req.body.code;
 
+        console.log("\n\n\nloginUser in userAccounts in api", apiId, confirmationCode, "\n\n\n");
+
         const user = await UserAccount.findOne({ where: {apiId} });
 
         if (!user) {
@@ -80,6 +103,7 @@ module.exports = {
     },
 
     async logoutUser(req, res) {
+        console.log("\n\n\nhit logoutUser in userAccounts.js in api\n\n\n");
         if (req.session.user && req.cookies.session_token) {
             const user = await UserAccount.find({where: {apiId: req.session.user.id}});
             await user.updateAttributes({active: false});
@@ -92,10 +116,12 @@ module.exports = {
     },
 
     async resetUserAccount(req, res) {
+        console.log("\n\n\nhit resetUserAccount in userAccounts.js in api\n\n\n");
 
     },
 
     async findAllBalancesForUser(req, res) {
+        console.log("\n\n\nhit findAllBalancesForUser in userAccounts.js in api\n\n\n");
         const caller = await authHelper.findApiCaller(req.session.user.id);
         if (!caller) {
             return res.status(caller.status).send({error: caller.error});
@@ -113,15 +139,17 @@ module.exports = {
     async verifyOrCreate(req, res) {
         let user;
         const {email, firstname, lastname} = req.body;
-        const createUserResponse = await axios.post(`${apiEndpoint}/user`, {
-            email,
-            firstname,
-            lastname
-        });
-
-        if (createUserResponse.status === 200) {
-            console.log("if case scenario");
-            const newUser = createUserResponse.data;
+        // const createUserResponse = await axios.post(`${apiEndpoint}/user`, {
+        //         email,
+        //         firstname,
+        //         lastname
+        //     }
+        // );
+        axios.post(`${apiEndpoint}/user`, {email, firstname, lastname})
+        .then(async res => {
+            // console.log("\n\n\n.then in post", res);
+            console.log("\n\n\nif case scenario in userAccounts, verifyOrCreate, api\n\n\n");
+            const newUser = res.data;
             user = await UserAccount.create({
                 apiId: newUser.value.id,
                 apiKey: newUser.value.apiCreds.apiKey,
@@ -131,23 +159,13 @@ module.exports = {
                 privateKey: newUser.privateKey,
                 active: false
             });
-        } else {
-            console.log("else case scenario");
-            user = await UserAccount.findOne({where: {email}});
-        }
-
-        const otpKey = otplib.authenticator.generateSecret();
-        const token = otplib.authenticator.generate(otpKey);
-        const otpExp = Date.now() + 300000;
-        const salt = bcrypt.genSaltSync();
-        const tokenHash = bcrypt.hashSync(token, salt);
-
-        await user.updateAttributes({
-            otpKey: tokenHash,
-            otpExp: otpExp
+            verifyOrCreateHelper(user, res);
+        })
+        .catch(async err => {
+            // console.log("\n\n\n.catch in post", err);
+            console.log("\n\n\nelse case scenario in userAccounts, verifyOrCreate, api\n\n\n");
+            user = await UserAccount.findOne({ where: { email } });
+            verifyOrCreateHelper(user, res);
         });
-
-        awsEmail.sendOTP(email, token);
-        return res.status(200).send(user);
     }
 };
