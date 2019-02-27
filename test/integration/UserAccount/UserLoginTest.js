@@ -31,6 +31,7 @@ module.exports = {
             await UserAccount.create({
                 apiId: 1,
                 apiKey: "apiKey",
+                email: "dev1@ncnt.io",
                 secretKey: "secretKey",
                 publicKey: "publicKey",
                 privateKey: "privateKey",

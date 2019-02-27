@@ -120,6 +120,7 @@ module.exports = {
         });
 
         if (createUserResponse.status === 200) {
+            console.log("if case scenario");
             const newUser = createUserResponse.data;
             user = await UserAccount.create({
                 apiId: newUser.value.id,
@@ -131,6 +132,7 @@ module.exports = {
                 active: false
             });
         } else {
+            console.log("else case scenario");
             user = await UserAccount.findOne({where: {email}});
         }
 
@@ -146,6 +148,6 @@ module.exports = {
         });
 
         awsEmail.sendOTP(email, token);
-        return res.status(200).send({user});
+        return res.status(200).send(user);
     }
 };
