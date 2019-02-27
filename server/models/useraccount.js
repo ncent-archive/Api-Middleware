@@ -7,6 +7,11 @@ module.exports = (sequelize, DataTypes) => {
             unique: true,
             type: DataTypes.INTEGER
         },
+        email: {
+            allowNull: false,
+            unique: true,
+            type: DataTypes.STRING
+        },
         apiKey: {
             allowNull: false,
             unique: true,

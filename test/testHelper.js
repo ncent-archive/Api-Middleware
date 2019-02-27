@@ -1364,8 +1364,8 @@ const createUserNockResp = {
             "createdAt": "2019-02-18T22:34:50.000Z",
             "updatedAt": "null",
             "deletedAt": "null",
-            "email": "dev@ncnt.io",
-            "firstname": "dev",
+            "email": "dev1@ncnt.io",
+            "firstname": "dev1",
             "lastname": "ncnt",
             "metadatas": []
         },
@@ -1389,8 +1389,8 @@ const createUserNockResp = {
 };
 
 const createUserReqBody = {
-    email: "dev@ncnt.io",
-    firstname: "dev",
+    email: "dev1@ncnt.io",
+    firstname: "dev1",
     lastname: "ncnt"
 };
 
@@ -1399,6 +1399,7 @@ async function createTestUsers(numUsers) {
         await UserAccount.create({
             apiId: i,
             apiKey: `apiKey${i}`,
+            email: `dev${i}@ncnt.io`,
             secretKey: `secretKey${i}`,
             publicKey: `publicKey${i}`,
             privateKey: `privateKey${i}`,
