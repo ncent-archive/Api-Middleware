@@ -131,6 +131,7 @@ module.exports = {
 
     async createReferralCode (req, res) {
         const challengeId = req.params.challengeId;
+       
 
         const callerData = await authHelper.findApiCaller(req.session.user.id);
         if (callerData.error) {
@@ -138,6 +139,17 @@ module.exports = {
         }
 
         const user = await UserAccount.findOne({where: {apiId: req.session.user.id}});
+
+        const existingChallengeParticipant = await ChallengeParticipant.findOne({
+            where: {
+                userId: user.id,
+                challengeId
+            }
+        });
+
+        if (existingChallengeParticipant) return res.status(200).send({ 
+            challengeParticipant: existingChallengeParticipant 
+        });
 
         const findOneChallengeResp = await axios.get(`${apiEndpoint}/challenge?id=${challengeId}&userId=${callerData.apiId}`, {
             headers: {'Authorization': authHelper.getAuthString(callerData.apiKey, callerData.secretKey)}

@@ -29,6 +29,9 @@ module.exports = (app) => {
     //retrieves all challenge balances carried by a particular user
     app.get("/api/users/balances", userAccountsController.findAllBalancesForUser);
 
+    //verifies user session
+    app.get("/api/users/session/verify", userAccountsController.verifySession);
+
     //creates a new challenge (with the logged in user as the sponsor)
     app.post("/api/challenges", challengesController.createChallenge);
 

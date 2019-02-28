@@ -1,10 +1,7 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
     const session = sequelize.define('session', {
-        sid: {
-            type: DataTypes.STRING,
-            unique: true
-        },
+        sid: DataTypes.STRING,
         sess: DataTypes.JSON,
         expire: DataTypes.DATE
     }, {});
