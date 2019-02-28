@@ -70,9 +70,34 @@ module.exports = {
     },
 
     async shareChallenge (req, res) {
-        const {challengeId, publicKeyToShareWith, shares, expiration, emailToShareWith} = req.body;
+        let sharerApiId;
+        const { challengeId, shares, expiration, referralCode } = req.body;        
+        console.log("\n\ncookie sent to shareChallenge middleware", "referralCode", referralCode);
 
-        const callerData = await authHelper.findApiCaller(req.session.user.id);
+        const publicKeyToShareWith = req.session.user.cryptoKeyPair.publicKey;
+        const emailToShareWith = req.session.user.userMetadata.email;
+
+        const challengeParticipant = await ChallengeParticipant.findOne({where: {referralCode}});
+        if (challengeParticipant) {
+            const sharerAccount = challengeParticipant.UserAccount;
+            sharerApiId = sharerAccount.apiId;
+        } else {
+            sharerApiId = 1;
+        }
+
+        console.log("\n\nsharerAccount in shareChallenge", 
+            "sharerApiId",
+            sharerApiId, 
+            "publicKeyToShareWith",
+            publicKeyToShareWith, 
+            "emailToShareWith",
+            emailToShareWith
+        );
+
+        const callerData = await authHelper.findApiCaller(sharerApiId);
+
+        console.log("callerData in shareChallenge\n\n", callerData);
+
         if (callerData.error) {
             return res.status(callerData.status).send({error: callerData.error});
         }
@@ -147,6 +172,7 @@ module.exports = {
             }
         });
 
+        //Existing code returned
         if (existingChallengeParticipant) return res.status(200).send({ 
             challengeParticipant: existingChallengeParticipant 
         });
@@ -168,7 +194,8 @@ module.exports = {
             referralCode: referralCode[0]
         });
 
-        return res.status(200).send({challengeParticipant});
+        //If new code created
+        return res.status(201).send({challengeParticipant});
     },
 
     async retrieveReferralCode (req, res) {
