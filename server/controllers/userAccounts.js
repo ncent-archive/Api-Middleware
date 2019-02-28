@@ -101,7 +101,7 @@ module.exports = {
         if (validCode) {
             await user.updateAttributes({active: true});
             req.session.user = findUserResp.data;
-            return res.status(200).send(findUserResp.data);
+            return res.status(200).send(user);
         }
 
         return res.status(403).send({ error: "Invalid code.\nYou can request another code if you like." });
@@ -151,10 +151,10 @@ module.exports = {
         //     }
         // );
         axios.post(`${apiEndpoint}/user`, {email, firstname, lastname})
-        .then(async res => {
-            // console.log("\n\n\n.then in post", res);
+        .then(async response => {
+            // console.log("\n\n\n.then in post", response);
             console.log("\n\n\nif case scenario in userAccounts, verifyOrCreate, api\n\n\n");
-            const newUser = res.data;
+            const newUser = response.data;
             user = await UserAccount.create({
                 apiId: newUser.value.id,
                 apiKey: newUser.value.apiCreds.apiKey,
@@ -172,5 +172,16 @@ module.exports = {
             user = await UserAccount.findOne({ where: { email } });
             verifyOrCreateHelper(user, res, email);
         });
+    },
+
+    async verifySession(req, res) {
+        console.log("\n\n\nverifySession", req.session, req.cookies, "\n\n");
+        if (req.session.user && req.cookies.session_token) {
+            console.log("\n\nverify on backend in session.js, req.session.user", req.session.user, "req.cookies.session_token", req.cookies.session_token);
+            const user = await UserAccount.findOne({where: {apiId: req.session.user.id}});
+            return res.status(200).send({ sessionVerified: true, user });
+        }
+
+        return res.status(403).send({ sessionVerified: false });
     }
 };
