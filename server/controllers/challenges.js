@@ -1,6 +1,7 @@
 "use strict";
 
-const apiEndpoint = "https://faw5rz7094.execute-api.us-west-1.amazonaws.com/development";
+const apiEndpoint = process.env.API;
+console.log("\n\nchallengesJS controller middleware, apiEndpoint being used is", apiEndpoint);
 const axios = require("axios");
 const axiosRetry = require("axios-retry");
 const authHelper = require("../helpers/authHelper.js");
