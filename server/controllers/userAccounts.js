@@ -176,7 +176,7 @@ module.exports = {
     },
 
     async verifySession(req, res) {
-        console.log("\n\n\nverifySession", req.session, req.cookies, "\n\n");
+        console.log("\n\n\ntop of verifySession", "session", req.session, "cookies", req.cookies, "\n\n");
         if (req.session.user && req.cookies.session_token) {
             console.log("\n\nverify on backend in session.js, req.session.user", req.session.user, "req.cookies.session_token", req.cookies.session_token);
             const user = await UserAccount.findOne({where: {apiId: req.session.user.id}});
