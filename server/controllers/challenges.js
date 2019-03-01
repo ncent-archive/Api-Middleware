@@ -1,6 +1,7 @@
 "use strict";
 
-const apiEndpoint = "https://faw5rz7094.execute-api.us-west-1.amazonaws.com/development";
+const apiEndpoint = process.env.API;
+console.log("\n\nchallengesJS controller middleware, apiEndpoint being used is", apiEndpoint);
 const axios = require("axios");
 const axiosRetry = require("axios-retry");
 const authHelper = require("../helpers/authHelper.js");
@@ -49,17 +50,19 @@ module.exports = {
 
     async findAllChallenges (req, res) {
         // const callerData = await authHelper.findApiCaller(req.session.user.id);
-        console.log("\nhit findAllChallenges middleware");
+        console.log("\n\nhit findAllChallenges middleware");
         const callerData = await authHelper.findApiCaller(1);
         if (callerData.error) {
             return res.status(callerData.status).send({error: callerData.error});
         }
 
-        console.log("\nfindAllChallenges middleware, callerData is", callerData);
+        console.log("\nfindAllChallenges middleware, callerData is", callerData.dataValues);
 
         const findAllChallengesResp = await axios.get(`${apiEndpoint}/challenge?userId=${callerData.apiId}`, {
             headers: {'Authorization': authHelper.getAuthString(callerData.apiKey, callerData.secretKey)}
         });
+
+        console.log("\nfindAllChallenges in middleware-api, allChallengesReturned from API", findAllChallengesResp.data);
 
         return res.status(findAllChallengesResp.status).send(findAllChallengesResp.data);
     },
@@ -105,7 +108,7 @@ module.exports = {
 
         const callerData = await authHelper.findApiCaller(sharerApiId);
 
-        console.log("\ncallerData in shareChallenge\n", callerData);
+        console.log("\ncallerData in shareChallenge\n", callerData.dataValues);
 
         if (callerData.error) {
             return res.status(callerData.status).send({error: callerData.error});

@@ -2,11 +2,14 @@
 
 const challengesController = require('../controllers').challenges;
 const userAccountsController = require('../controllers').userAccounts;
+const jobApplicationsController = require('../controllers').jobApplications;
 
 module.exports = (app) => {
     app.get('/api', (req, res) => res.status(200).send({
         message: 'Welcome to the nCent API Middleware!'
     }));
+
+    //User Routes
 
     //creates a new user account
     app.post("/api/users", userAccountsController.createUser);
@@ -31,6 +34,11 @@ module.exports = (app) => {
 
     //verifies user session
     app.get("/api/users/session/verify", userAccountsController.verifySession);
+
+
+
+
+    //Challenge Routes
 
     //creates a new challenge (with the logged in user as the sponsor)
     app.post("/api/challenges", challengesController.createChallenge);
@@ -58,4 +66,14 @@ module.exports = (app) => {
 
     //retrieve's a user's unique challenge referral code
     app.get("/api/challenges/referralCode/:challengeId", challengesController.retrieveReferralCode);
+
+
+    
+
+    //Application routes
+
+    //sending job application from careers page
+    app.post("/api/jobApplications", jobApplicationsController.sendJobApplication);
+
+
 };
