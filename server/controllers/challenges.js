@@ -62,7 +62,7 @@ module.exports = {
             headers: {'Authorization': authHelper.getAuthString(callerData.apiKey, callerData.secretKey)}
         });
 
-        console.log("\nfindAllChallenges in middleware-api, allChallengesReturned from API", findAllChallengesResp);
+        console.log("\nfindAllChallenges in middleware-api, allChallengesReturned from API", findAllChallengesResp.data);
 
         return res.status(findAllChallengesResp.status).send(findAllChallengesResp.data);
     },
@@ -108,7 +108,7 @@ module.exports = {
 
         const callerData = await authHelper.findApiCaller(sharerApiId);
 
-        console.log("\ncallerData in shareChallenge\n", callerData);
+        console.log("\ncallerData in shareChallenge\n", callerData.dataValues);
 
         if (callerData.error) {
             return res.status(callerData.status).send({error: callerData.error});
