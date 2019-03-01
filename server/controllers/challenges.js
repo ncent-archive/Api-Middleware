@@ -49,17 +49,19 @@ module.exports = {
 
     async findAllChallenges (req, res) {
         // const callerData = await authHelper.findApiCaller(req.session.user.id);
-        console.log("\nhit findAllChallenges middleware");
+        console.log("\n\nhit findAllChallenges middleware");
         const callerData = await authHelper.findApiCaller(1);
         if (callerData.error) {
             return res.status(callerData.status).send({error: callerData.error});
         }
 
-        console.log("\nfindAllChallenges middleware, callerData is", callerData);
+        console.log("\nfindAllChallenges middleware, callerData is", callerData.dataValues);
 
         const findAllChallengesResp = await axios.get(`${apiEndpoint}/challenge?userId=${callerData.apiId}`, {
             headers: {'Authorization': authHelper.getAuthString(callerData.apiKey, callerData.secretKey)}
         });
+
+        console.log("\nfindAllChallenges in middleware-api, allChallengesReturned from API", findAllChallengesResp);
 
         return res.status(findAllChallengesResp.status).send(findAllChallengesResp.data);
     },
