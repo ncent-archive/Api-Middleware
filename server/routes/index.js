@@ -50,7 +50,7 @@ module.exports = (app) => {
     app.get("/api/challenges", challengesController.findAllChallenges);
 
     //finds all user account balances for a single given challenge
-    app.get("/api/challenges/balances", challengesController.findAllBalancesForChallenge);
+    app.get("/api/challenges/balances/:challengeId", challengesController.findAllBalancesForChallenge);
 
     //shares a challenge from one user to another
     app.patch("/api/challenges/share", challengesController.shareChallenge);
@@ -68,7 +68,7 @@ module.exports = (app) => {
     app.get("/api/challenges/referralCode/:challengeId", challengesController.retrieveReferralCode);
 
 
-    
+
 
     //Application routes
 

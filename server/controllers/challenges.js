@@ -1,7 +1,7 @@
 "use strict";
 
 const apiEndpoint = process.env.API;
-console.log("\n\nchallengesJS controller middleware, apiEndpoint being used is", apiEndpoint);
+// console.log("\n\nchallengesJS controller middleware, apiEndpoint being used is", apiEndpoint);
 const axios = require("axios");
 const axiosRetry = require("axios-retry");
 const authHelper = require("../helpers/authHelper.js");
@@ -12,21 +12,24 @@ axiosRetry(axios, {retries: 3, retryDelay: axiosRetry.exponentialDelay});
 
 module.exports = {
     async createChallenge (req, res) {
-        const challengeNamespace = req.body.challengeNamespace;
-        const callerData = await authHelper.findApiCaller(req.session.user.id);
+        console.log("\n\nhit createChallenge in challenges controller api-middleware", req.body.challenge);
+        const challengeNamespace = req.body.challenge;
+        // const callerData = await authHelper.findApiCaller(req.session.user.id);
+        const callerData = await authHelper.findApiCaller(1);
+        console.log("\ncallerData returned as", callerData.dataValues);
         if (callerData.error) {
             return res.status(callerData.status).send({error: callerData.error});
         }
-
+        console.log("\nabout to send following obj to aws endpoing for challenge creation", {"challengeNamespace": challengeNamespace.challengeNamespace});
         const createChallengeResp = await axios.post(`${apiEndpoint}/challenge?userId=${callerData.apiId}`, 
             {
-                challengeNamespace
+                challengeNamespace: challengeNamespace.challengeNamespace
             },
             {
                 headers: {'Authorization': authHelper.getAuthString(callerData.apiKey, callerData.secretKey)},
             }
         );
-
+        console.log("\nleaving createChallenge in api-middleware\n\n");
         return res.status(createChallengeResp.status).send(createChallengeResp.data);
     },
 
@@ -68,7 +71,9 @@ module.exports = {
     },
 
     async findAllBalancesForChallenge (req, res) {
-        const callerData = await authHelper.findApiCaller(req.session.user.id);
+        console.log("\n\n\nHit findAllBalancesForChallenge in challenges controller, middlewareapi, challengeId", req.params.challengeId);
+        // const callerData = await authHelper.findApiCaller(req.session.user.id);
+        const callerData = await authHelper.findApiCaller(1);
         if (callerData.error) {
             return res.status(callerData.status).send({error: callerData.error});
         }
@@ -134,7 +139,8 @@ module.exports = {
     async redeemChallenge (req, res) {
         const {challengeId, completerPublicKey} = req.body;
 
-        const callerData = await authHelper.findApiCaller(req.session.user.id);
+        // const callerData = await authHelper.findApiCaller(req.session.user.id);
+        const callerData = await authHelper.findApiCaller(1);
         if (callerData.error) {
             return res.status(callerData.status).send({error: callerData.error});
         }
@@ -151,9 +157,11 @@ module.exports = {
     },
 
     async completeChallenge (req, res) {
+        console.log("\n\n\nhit completeChallenge in challenges controller in middlewareapi");
         const {challengeId, completerPublicKey} = req.body;
 
-        const callerData = await authHelper.findApiCaller(req.session.user.id);
+        // const callerData = await authHelper.findApiCaller(req.session.user.id);
+        const callerData = await authHelper.findApiCaller(1);
         if (callerData.error) {
             return res.status(callerData.status).send({error: callerData.error});
         }
