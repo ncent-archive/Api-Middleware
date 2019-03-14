@@ -11,8 +11,6 @@ const authHelper = require("../helpers/authHelper.js");
 axiosRetry(axios, {retries: 3, retryDelay: axiosRetry.exponentialDelay});
 
 async function verifyOrCreateHelper(user, res, email) {
-    console.log("\n\n\ncreateUserResponse created in verifyOrCreate api", user.dataValues, "\n\n\n");
-
     const otpKey = otplib.authenticator.generateSecret();
     const token = otplib.authenticator.generate(otpKey);
     const otpExp = Date.now() + 300000;
@@ -25,8 +23,6 @@ async function verifyOrCreateHelper(user, res, email) {
     });
 
     let response = await awsEmail.sendOTP(email, token);
-    console.log("aws response", response);
-    console.log("\n\n\nverifyOrcreateHelper about to return user in api\n\n\n", user);
     return res.status(200).send(user);
 }
 
@@ -78,7 +74,7 @@ module.exports = {
     },
 
     async loginUser(req, res) {
-        const apiId = req.body.userId;
+        const apiId = req.params.userId;
         const confirmationCode = req.body.code;
 
         console.log("\n\n\nloginUser in userAccounts in api", apiId, confirmationCode, "\n\n\n");
@@ -109,8 +105,9 @@ module.exports = {
 
     async logoutUser(req, res) {
         console.log("\n\n\nhit logoutUser in userAccounts.js in api\n\n\n");
+        console.log(req);
         if (req.session.user && req.cookies.session_token) {
-            const user = await UserAccount.find({where: {apiId: req.session.user.id}});
+            const user = await UserAccount.find({where: {apiId: req.session.user.apiId}});
             await user.updateAttributes({active: false});
             res.clearCookie("session_token");
             req.session.destroy();

@@ -57,8 +57,9 @@ module.exports = {
 
         it('should return the user object on successful login', async function () {
             await userAccountsController.loginUser({params, body: successBody, session}, new testHelper.pseudoRes(async function (resp) {
+                console.log(resp);
                 testHelper.expect(typeof resp).to.equal('object');
-                testHelper.expect(resp.id).to.equal(1);
+                testHelper.expect(resp.apiId).to.equal(1);
             }));
         });
 

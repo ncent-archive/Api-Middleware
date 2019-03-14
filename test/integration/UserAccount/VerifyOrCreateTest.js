@@ -17,6 +17,7 @@ module.exports = {
 
                 const user = await UserAccount.findOne({where: {email: "dev1@ncnt.io"}});
                 testHelper.expect(user.email).to.equal('dev1@ncnt.io');
+                await testHelper.deleteAllTestUsers();
             }));
         });
     })

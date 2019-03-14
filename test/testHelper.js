@@ -1,6 +1,6 @@
 "use strict";
 
-const apiEndpoint = "https://faw5rz7094.execute-api.us-west-1.amazonaws.com/development";
+const apiEndpoint = process.env.API;
 const nock = require('nock');
 const expect = require('chai').expect;
 const UserAccount = require('../server/models').UserAccount;
@@ -47,7 +47,7 @@ const testSession = {
             "createdAt": "2019-02-18T22:34:50.000Z",
             "updatedAt": "null",
             "deletedAt": "null",
-            "email": "af@ncnt.io",
+            "email": "dev@ncnt.io",
             "firstname": "dev",
             "lastname": "ncnt",
             "metadatas": []
@@ -1160,7 +1160,7 @@ const findOneUserNockResp = {
         "createdAt": "2019-02-18T22:34:50.000Z",
         "updatedAt": "null",
         "deletedAt": "null",
-        "email": "af@ncnt.io",
+        "email": "dev@ncnt.io",
         "firstname": "dev",
         "lastname": "ncnt",
         "metadatas": []

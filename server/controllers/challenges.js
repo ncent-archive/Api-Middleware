@@ -27,6 +27,15 @@ module.exports = {
             }
         );
 
+        await axios.put(`${apiEndpoint}/challenge/activate?userId=${callerData.apiId}`,
+            {
+                challengeId: createChallengeResp.data.id.toString()
+            },
+            {
+                headers: {'Authorization': authHelper.getAuthString(callerData.apiKey, callerData.secretKey)},
+            }
+        );
+
         return res.status(createChallengeResp.status).send(createChallengeResp.data);
     },
 
@@ -38,8 +47,6 @@ module.exports = {
         if (callerData.error) {
             return res.status(callerData.status).send({error: callerData.error});
         }
-
-        console.log("\nfindOneChallenge middleware, callerData is", callerData.dataValues);
 
         const findOneChallengeResp = await axios.get(`${apiEndpoint}/challenge?id=${challengeId}&userId=${callerData.apiId}`, {
             headers: {'Authorization': authHelper.getAuthString(callerData.apiKey, callerData.secretKey)}
@@ -56,13 +63,9 @@ module.exports = {
             return res.status(callerData.status).send({error: callerData.error});
         }
 
-        console.log("\nfindAllChallenges middleware, callerData is", callerData.dataValues);
-
         const findAllChallengesResp = await axios.get(`${apiEndpoint}/challenge?userId=${callerData.apiId}`, {
             headers: {'Authorization': authHelper.getAuthString(callerData.apiKey, callerData.secretKey)}
         });
-
-        console.log("\nfindAllChallenges in middleware-api, allChallengesReturned from API", findAllChallengesResp.data);
 
         return res.status(findAllChallengesResp.status).send(findAllChallengesResp.data);
     },
@@ -108,14 +111,11 @@ module.exports = {
 
         const callerData = await authHelper.findApiCaller(sharerApiId);
 
-        console.log("\ncallerData in shareChallenge\n", callerData.dataValues);
-
         if (callerData.error) {
             return res.status(callerData.status).send({error: callerData.error});
         }
 
-        console.log("\n\nabout to query aws at", `${apiEndpoint}/challenge/share?userId=${callerData.apiId}`);
-        const shareChallengeResp = await axios.put(`${apiEndpoint}/challenge/share?userId=${callerData.apiId}`, 
+        const shareChallengeResp = await axios.put(`${apiEndpoint}/challenge/share?userId=${callerData.apiId}`,
             {
                 challengeId,
                 publicKeyToShareWith,
