@@ -63,7 +63,12 @@ module.exports = {
             return res.status(404).send({error: "UserAccount not found."});
         }
 
-        const caller = await authHelper.findApiCaller(req.session.user.id);
+        let caller;
+        if (req.session.user) {
+            caller = await authHelper.findApiCaller(req.session.user.id);
+        } else {
+            caller = await authHelper.findApiCaller(1);
+        }
         if (!caller) {
             return res.status(caller.status).send({error: caller.error});
         }
