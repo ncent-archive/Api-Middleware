@@ -52,8 +52,6 @@ module.exports = {
             return res.status(callerData.status).send({error: callerData.error});
         }
 
-        console.log("\nfindOneChallenge middleware, callerData is", callerData.dataValues);
-
         const findOneChallengeResp = await axios.get(`${apiEndpoint}/challenge?id=${challengeId}&userId=${callerData.apiId}`, {
             headers: {'Authorization': authHelper.getAuthString(callerData.apiKey, callerData.secretKey)}
         });
@@ -69,13 +67,9 @@ module.exports = {
             return res.status(callerData.status).send({error: callerData.error});
         }
 
-        console.log("\nfindAllChallenges middleware, callerData is", callerData.dataValues);
-
         const findAllChallengesResp = await axios.get(`${apiEndpoint}/challenge?userId=${callerData.apiId}`, {
             headers: {'Authorization': authHelper.getAuthString(callerData.apiKey, callerData.secretKey)}
         });
-
-        // console.log("\nfindAllChallenges in middleware-api, allChallengesReturned from API", findAllChallengesResp.data);
 
         return res.status(findAllChallengesResp.status).send(findAllChallengesResp.data);
     },
@@ -124,8 +118,6 @@ module.exports = {
         );
 
         const callerData = await authHelper.findApiCaller(sharerApiId);
-
-        console.log("\ncallerData in shareChallenge\n", callerData.dataValues);
 
         if (callerData.error) {
             return res.status(callerData.status).send({error: callerData.error});

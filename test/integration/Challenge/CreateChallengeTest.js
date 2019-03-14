@@ -8,6 +8,7 @@ module.exports = {
         const session = testHelper.testSession;
         const params = {userId: 1};
         testHelper.createNockResponse("POST", '/challenge', {userId: 1}, 200, testHelper.createChallengeNockResp);
+        testHelper.createNockResponse("PUT", '/challenge/activate', {userId: 1}, 200, testHelper.createChallengeNockResp);
 
         beforeEach(async () => {
             await testHelper.createTestUsers(1);
