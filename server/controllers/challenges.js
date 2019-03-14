@@ -13,22 +13,32 @@ axiosRetry(axios, {retries: 3, retryDelay: axiosRetry.exponentialDelay});
 module.exports = {
     async createChallenge (req, res) {
         console.log("\n\nhit createChallenge in challenges controller api-middleware", req.body.challenge);
-        const challengeNamespace = req.body.challenge;
+        const challengeNamespace = req.body.challenge.challengeNamespace;
         // const callerData = await authHelper.findApiCaller(req.session.user.id);
         const callerData = await authHelper.findApiCaller(1);
         console.log("\ncallerData returned as", callerData.dataValues);
         if (callerData.error) {
             return res.status(callerData.status).send({error: callerData.error});
         }
-        console.log("\nabout to send following obj to aws endpoing for challenge creation", {"challengeNamespace": challengeNamespace.challengeNamespace});
+        console.log("\nabout to send following obj to aws endpoing for challenge creation", {"challengeNamespace": challengeNamespace});
         const createChallengeResp = await axios.post(`${apiEndpoint}/challenge?userId=${callerData.apiId}`, 
             {
-                challengeNamespace: challengeNamespace.challengeNamespace
+                challengeNamespace
             },
             {
                 headers: {'Authorization': authHelper.getAuthString(callerData.apiKey, callerData.secretKey)},
             }
         );
+        console.log("about to activate challenge, challengeId", createChallengeResp.data.id.toString(), "endpoint", `${apiEndpoint}/challenge/activate?userId=${callerData.apiId}`);
+        let challengeActivationResp = await axios.put(`${apiEndpoint}/challenge/activate?userId=${callerData.apiId}`,
+            {
+                challengeId: createChallengeResp.data.id.toString()
+            },
+            {
+                headers: { 'Authorization': authHelper.getAuthString(callerData.apiKey, callerData.secretKey) },
+            }
+        );
+        console.log("challengeActivation returned", challengeActivationResp.data);
         console.log("\nleaving createChallenge in api-middleware\n\n");
         return res.status(createChallengeResp.status).send(createChallengeResp.data);
     },
@@ -65,7 +75,7 @@ module.exports = {
             headers: {'Authorization': authHelper.getAuthString(callerData.apiKey, callerData.secretKey)}
         });
 
-        console.log("\nfindAllChallenges in middleware-api, allChallengesReturned from API", findAllChallengesResp.data);
+        // console.log("\nfindAllChallenges in middleware-api, allChallengesReturned from API", findAllChallengesResp.data);
 
         return res.status(findAllChallengesResp.status).send(findAllChallengesResp.data);
     },
@@ -161,6 +171,7 @@ module.exports = {
     async completeChallenge (req, res) {
         console.log("\n\n\nhit completeChallenge in challenges controller in middlewareapi");
         const {challengeId, completerEmail} = req.body;
+        const stringifiedChallengeId = JSON.stringify(challengeId);
 
         const userAccount = await UserAccount.findOne({where: {email: completerEmail}});
         console.log("\nuserAccount returned in completeChallenge", userAccount.dataValues);
@@ -172,14 +183,15 @@ module.exports = {
             return res.status(callerData.status).send({error: callerData.error});
         }
 
-        console.log("\nabout to completeChallenge send to aws from controller", "challengeId", challengeId, "completerPublicKey", completerPublicKey, "endpoint is", `${apiEndpoint}/challenge/complete?userId=${callerData.apiId}`);
-        const completeChallengeResp = await axios.put(`${apiEndpoint}/challenge/complete?userId=${callerData.apiId}`, {
-            headers: {'Authorization': authHelper.getAuthString(callerData.apiKey, callerData.secretKey)},
-            data: {
+        console.log("\nabout to completeChallenge send to aws from controller", "challengeId", typeof challengeId, challengeId, typeof stringifiedChallengeId, stringifiedChallengeId, "completerPublicKey", completerPublicKey, "endpoint is (put)", `${apiEndpoint}/challenge/complete?userId=${callerData.apiId}`, "authString", authHelper.getAuthString(callerData.apiKey, callerData.secretKey));
+        const completeChallengeResp = await axios.put(`${apiEndpoint}/challenge/complete?userId=${callerData.apiId}`,  {
                 challengeId,
                 completerPublicKey
+            },
+            {
+                headers: {'Authorization': authHelper.getAuthString(callerData.apiKey, callerData.secretKey)}
             }
-        });
+        );
 
         return res.status(completeChallengeResp.status).send(completeChallengeResp.data);
     },
