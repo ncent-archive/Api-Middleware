@@ -43,7 +43,7 @@ module.exports = {
         const challengeId = req.params.challengeId;
         // const callerData = await authHelper.findApiCaller(req.session.user.id);
         console.log("\nhit findOneChallenge middleware");
-        const callerData = await authHelper.findApiCaller(1);
+        const callerData = await authHelper.findApiCaller(150);
         if (callerData.error) {
             return res.status(callerData.status).send({error: callerData.error});
         }
@@ -58,7 +58,7 @@ module.exports = {
     async findAllChallenges (req, res) {
         // const callerData = await authHelper.findApiCaller(req.session.user.id);
         console.log("\n\nhit findAllChallenges middleware");
-        const callerData = await authHelper.findApiCaller(1);
+        const callerData = await authHelper.findApiCaller(150);
         if (callerData.error) {
             return res.status(callerData.status).send({error: callerData.error});
         }
