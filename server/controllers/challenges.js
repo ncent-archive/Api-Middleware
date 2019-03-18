@@ -1,7 +1,7 @@
 "use strict";
 
 const apiEndpoint = process.env.API;
-console.log("\n\nchallengesJS controller middleware, apiEndpoint being used is", apiEndpoint);
+// console.log("\n\nchallengesJS controller middleware, apiEndpoint being used is", apiEndpoint);
 const axios = require("axios");
 const axiosRetry = require("axios-retry");
 const authHelper = require("../helpers/authHelper.js");
@@ -12,12 +12,15 @@ axiosRetry(axios, {retries: 3, retryDelay: axiosRetry.exponentialDelay});
 
 module.exports = {
     async createChallenge (req, res) {
-        const challengeNamespace = req.body.challengeNamespace;
-        const callerData = await authHelper.findApiCaller(req.session.user.id);
+        console.log("\n\nhit createChallenge in challenges controller api-middleware", req.body.challenge);
+        const challengeNamespace = req.body.challenge.challengeNamespace;
+        // const callerData = await authHelper.findApiCaller(req.session.user.id);
+        const callerData = await authHelper.findApiCaller(1);
+        console.log("\ncallerData returned as", callerData.dataValues);
         if (callerData.error) {
             return res.status(callerData.status).send({error: callerData.error});
         }
-
+        console.log("\nabout to send following obj to aws endpoing for challenge creation", {"challengeNamespace": challengeNamespace});
         const createChallengeResp = await axios.post(`${apiEndpoint}/challenge?userId=${callerData.apiId}`, 
             {
                 challengeNamespace
@@ -26,16 +29,17 @@ module.exports = {
                 headers: {'Authorization': authHelper.getAuthString(callerData.apiKey, callerData.secretKey)},
             }
         );
-
-        await axios.put(`${apiEndpoint}/challenge/activate?userId=${callerData.apiId}`,
+        console.log("about to activate challenge, challengeId", createChallengeResp.data.id.toString(), "endpoint", `${apiEndpoint}/challenge/activate?userId=${callerData.apiId}`);
+        let challengeActivationResp = await axios.put(`${apiEndpoint}/challenge/activate?userId=${callerData.apiId}`,
             {
                 challengeId: createChallengeResp.data.id.toString()
             },
             {
-                headers: {'Authorization': authHelper.getAuthString(callerData.apiKey, callerData.secretKey)},
+                headers: { 'Authorization': authHelper.getAuthString(callerData.apiKey, callerData.secretKey) },
             }
         );
-
+        console.log("challengeActivation returned", challengeActivationResp.data);
+        console.log("\nleaving createChallenge in api-middleware\n\n");
         return res.status(createChallengeResp.status).send(createChallengeResp.data);
     },
 
@@ -71,7 +75,9 @@ module.exports = {
     },
 
     async findAllBalancesForChallenge (req, res) {
-        const callerData = await authHelper.findApiCaller(req.session.user.id);
+        console.log("\n\n\nHit findAllBalancesForChallenge in challenges controller, middlewareapi, challengeId", req.params.challengeId);
+        // const callerData = await authHelper.findApiCaller(req.session.user.id);
+        const callerData = await authHelper.findApiCaller(1);
         if (callerData.error) {
             return res.status(callerData.status).send({error: callerData.error});
         }
@@ -86,7 +92,7 @@ module.exports = {
     async shareChallenge (req, res) {
         let sharerApiId;
         const { challengeId, shares, expiration, referralCode } = req.body;        
-        console.log("\n\n\ntop of shareChallenge api-middleware", "referralCode", referralCode);
+        console.log("\n\n\ntop of shareChallenge api-middleware", "referralCode", referralCode, "shares", shares, "expiration", expiration, "referralCode", referralCode);
 
         const publicKeyToShareWith = req.session.user.cryptoKeyPair.publicKey;
         const emailToShareWith = req.session.user.userMetadata.email;
@@ -115,7 +121,8 @@ module.exports = {
             return res.status(callerData.status).send({error: callerData.error});
         }
 
-        const shareChallengeResp = await axios.put(`${apiEndpoint}/challenge/share?userId=${callerData.apiId}`,
+        console.log("\n\nabout to query aws at", `${apiEndpoint}/challenge/share?userId=${callerData.apiId}`, "reqBody contains", challengeId, publicKeyToShareWith, shares, expiration, emailToShareWith);
+        const shareChallengeResp = await axios.put(`${apiEndpoint}/challenge/share?userId=${callerData.apiId}`, 
             {
                 challengeId,
                 publicKeyToShareWith,
@@ -134,7 +141,8 @@ module.exports = {
     async redeemChallenge (req, res) {
         const {challengeId, completerPublicKey} = req.body;
 
-        const callerData = await authHelper.findApiCaller(req.session.user.id);
+        // const callerData = await authHelper.findApiCaller(req.session.user.id);
+        const callerData = await authHelper.findApiCaller(1);
         if (callerData.error) {
             return res.status(callerData.status).send({error: callerData.error});
         }
@@ -151,20 +159,27 @@ module.exports = {
     },
 
     async completeChallenge (req, res) {
-        const {challengeId, completerPublicKey} = req.body;
+        console.log("\n\n\nhit completeChallenge in challenges controller in middlewareapi");
+        const {challengeId, completerEmail} = req.body;
+        const stringifiedChallengeId = JSON.stringify(challengeId);
 
-        const callerData = await authHelper.findApiCaller(req.session.user.id);
+        const userAccount = await UserAccount.findOne({where: {email: completerEmail}});
+        console.log("\nuserAccount returned in completeChallenge", userAccount.dataValues);
+        const completerPublicKey = userAccount.publicKey;
+
+        // const callerData = await authHelper.findApiCaller(req.session.user.id);
+        const callerData = await authHelper.findApiCaller(1);
         if (callerData.error) {
             return res.status(callerData.status).send({error: callerData.error});
         }
 
-        const completeChallengeResp = await axios.put(`${apiEndpoint}/challenge/complete?userId=${callerData.apiId}`,
-            {
+        console.log("\nabout to completeChallenge send to aws from controller", "challengeId", typeof challengeId, challengeId, typeof stringifiedChallengeId, stringifiedChallengeId, "completerPublicKey", completerPublicKey, "endpoint is (put)", `${apiEndpoint}/challenge/complete?userId=${callerData.apiId}`, "authString", authHelper.getAuthString(callerData.apiKey, callerData.secretKey));
+        const completeChallengeResp = await axios.put(`${apiEndpoint}/challenge/complete?userId=${callerData.apiId}`,  {
                 challengeId,
                 completerPublicKey
             },
             {
-                headers: {'Authorization': authHelper.getAuthString(callerData.apiKey, callerData.secretKey)},
+                headers: {'Authorization': authHelper.getAuthString(callerData.apiKey, callerData.secretKey)}
             }
         );
 
@@ -173,14 +188,25 @@ module.exports = {
 
     async createReferralCode (req, res) {
         const challengeId = req.params.challengeId;
+        let callerData;
        
 
-        const callerData = await authHelper.findApiCaller(req.session.user.id);
+        if (req.session.user) {
+            callerData = await authHelper.findApiCaller(req.session.user.id);
+        } else {
+            callerData = await authHelper.findApiCaller(1);
+        }
+
         if (callerData.error) {
             return res.status(callerData.status).send({error: callerData.error});
         }
 
-        const user = await UserAccount.findOne({where: {apiId: req.session.user.id}});
+        let user;
+        if (req.session.user) {
+            user = await UserAccount.findOne({ where: { apiId: req.session.user.id } });
+        } else {
+            user = await UserAccount.findOne({ where: { apiId: 1 } });
+        }
 
         const existingChallengeParticipant = await ChallengeParticipant.findOne({
             where: {
@@ -217,7 +243,12 @@ module.exports = {
 
     async retrieveReferralCode (req, res) {
         const challengeId = req.params.challengeId;
-        const user = await UserAccount.findOne({where: {apiId: req.session.user.id}});
+        let user;
+        if (req.session.user) {
+            user = await UserAccount.findOne({where: {apiId: req.session.user.id}});
+        } else {
+            user = await UserAccount.findOne({ where: { apiId: 1 } });
+        }
         const userId = user.id;
 
         const challengeParticipant = await ChallengeParticipant.findOne({where: {challengeId, userId}});

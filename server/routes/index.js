@@ -68,7 +68,7 @@ module.exports = (app) => {
     app.get("/api/challenges/referralCode/:challengeId", challengesController.retrieveReferralCode);
 
 
-    
+
 
     //Application routes
 
