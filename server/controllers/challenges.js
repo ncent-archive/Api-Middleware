@@ -97,7 +97,7 @@ module.exports = {
             const sharerAccount = await UserAccount.findOne({where: {id: sharerAccountId}});
             sharerApiId = sharerAccount.apiId;
         } else {
-            sharerApiId = 1;
+            sharerApiId = 150;
         }
 
         console.log("\n\n\nsharerAccount in shareChallenge", 
