@@ -158,13 +158,15 @@ module.exports = {
             return res.status(callerData.status).send({error: callerData.error});
         }
 
-        const completeChallengeResp = await axios.put(`${apiEndpoint}/challenge/complete?userId=${callerData.apiId}`, {
-            headers: {'Authorization': authHelper.getAuthString(callerData.apiKey, callerData.secretKey)},
-            data: {
+        const completeChallengeResp = await axios.put(`${apiEndpoint}/challenge/complete?userId=${callerData.apiId}`,
+            {
                 challengeId,
                 completerPublicKey
+            },
+            {
+                headers: {'Authorization': authHelper.getAuthString(callerData.apiKey, callerData.secretKey)},
             }
-        });
+        );
 
         return res.status(completeChallengeResp.status).send(completeChallengeResp.data);
     },
