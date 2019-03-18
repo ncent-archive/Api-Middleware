@@ -76,7 +76,7 @@ module.exports = {
             return res.status(callerData.status).send({error: callerData.error});
         }
 
-        const findAllBalancesForChallengeResp = await axios.get(`${apiEndpoint}/challenge/balances?userId=${callerData.apiId}&id=${req.params.challengeId}`, {
+        const findAllBalancesForChallengeResp = await axios.get(`${apiEndpoint}/challenge/balances?userId=${callerData.apiId}&challengeId=${req.params.challengeId}`, {
             headers: {'Authorization': authHelper.getAuthString(callerData.apiKey, callerData.secretKey)}
         });
 
