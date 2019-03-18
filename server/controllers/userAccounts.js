@@ -75,7 +75,7 @@ module.exports = {
     },
 
     async loginUser(req, res) {
-        const apiId = req.params.userId;
+        const apiId = req.body.userId;
         const confirmationCode = req.body.code;
 
         console.log("\n\n\nloginUser in userAccounts in api", apiId, confirmationCode, "\n\n\n");

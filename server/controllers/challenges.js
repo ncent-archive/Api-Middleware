@@ -47,7 +47,7 @@ module.exports = {
         const challengeId = req.params.challengeId;
         // const callerData = await authHelper.findApiCaller(req.session.user.id);
         console.log("\nhit findOneChallenge middleware");
-        const callerData = await authHelper.findApiCaller(1);
+        const callerData = await authHelper.findApiCaller(150);
         if (callerData.error) {
             return res.status(callerData.status).send({error: callerData.error});
         }
@@ -61,8 +61,8 @@ module.exports = {
 
     async findAllChallenges (req, res) {
         // const callerData = await authHelper.findApiCaller(req.session.user.id);
-        console.log("\n\nhit findAllChallenges api-middleware");
-        const callerData = await authHelper.findApiCaller(1);
+        console.log("\n\nhit findAllChallenges middleware");
+        const callerData = await authHelper.findApiCaller(150);
         if (callerData.error) {
             return res.status(callerData.status).send({error: callerData.error});
         }
@@ -81,8 +81,6 @@ module.exports = {
         if (callerData.error) {
             return res.status(callerData.status).send({error: callerData.error});
         }
-
-        console.log("\nfindAllBalancesForChallenge, aws route being hit", `${apiEndpoint}/challenge/balances?userId=${callerData.apiId}&id=${req.params.challengeId}`);
 
         const findAllBalancesForChallengeResp = await axios.get(`${apiEndpoint}/challenge/balances?userId=${callerData.apiId}&challengeId=${req.params.challengeId}`, {
             headers: {'Authorization': authHelper.getAuthString(callerData.apiKey, callerData.secretKey)}
@@ -105,7 +103,7 @@ module.exports = {
             const sharerAccount = await UserAccount.findOne({where: {id: sharerAccountId}});
             sharerApiId = sharerAccount.apiId;
         } else {
-            sharerApiId = 1;
+            sharerApiId = 150;
         }
 
         console.log("\n\n\nsharerAccount in shareChallenge", 
