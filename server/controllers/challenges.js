@@ -9,6 +9,8 @@ const voucherCodes = require('voucher-code-generator');
 const ChallengeParticipant = require('../models').ChallengeParticipant;
 const UserAccount = require('../models').UserAccount;
 axiosRetry(axios, {retries: 3, retryDelay: axiosRetry.exponentialDelay});
+const { BitlyClient } = require('bitly');
+const bitly = new BitlyClient(process.env.BITLY, {});
 
 module.exports = {
     async createChallenge (req, res) {
