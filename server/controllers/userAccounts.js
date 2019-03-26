@@ -11,18 +11,18 @@ const authHelper = require("../helpers/authHelper.js");
 axiosRetry(axios, { retries: 3, retryDelay: axiosRetry.exponentialDelay });
 
 async function verifyOrCreateHelper(user, res, email) {
-    const otpKey = otplib.authenticator.generateSecret();
-    const token = otplib.authenticator.generate(otpKey);
-    const otpExp = Date.now() + 300000;
-    const salt = bcrypt.genSaltSync();
-    const tokenHash = bcrypt.hashSync(token, salt);
-
-    await user.updateAttributes({
-        otpKey: tokenHash,
-        otpExp: otpExp
-    });
-
-    let response = await awsEmail.sendOTP(email, token);
+    // const otpKey = otplib.authenticator.generateSecret();
+    // const token = otplib.authenticator.generate(otpKey);
+    // const otpExp = Date.now() + 300000;
+    // const salt = bcrypt.genSaltSync();
+    // const tokenHash = bcrypt.hashSync(token, salt);
+    //
+    // await user.updateAttributes({
+    //     otpKey: tokenHash,
+    //     otpExp: otpExp
+    // });
+    //
+    // let response = await awsEmail.sendOTP(email, token);
     return res.status(200).send(user);
 }
 
