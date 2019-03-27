@@ -60,7 +60,7 @@ module.exports = {
         }
 
         // const caller = await authHelper.findApiCaller(req.session.user.id);
-        const caller = await authHelper.findApiCaller(150);
+        const caller = await authHelper.findApiCaller(180);
         if (!caller) {
             return res.status(caller.status).send({ error: caller.error });
         }

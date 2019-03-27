@@ -1,12 +1,12 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.bulkInsert('UserAccounts', [{
-      apiId: 150,
-      "email": "dev+test111@ncnt.io",
-      "publicKey": "[B@6356695f",
-      "apiKey": "[B@2e005c4b",
-      "privateKey": "[C@5ffead27",
-      "secretKey": "[C@4567f35d",
+      apiId: 180,
+      "email": "dev+test113@ncnt.io",
+      "publicKey": "[B@3e58a80e",
+      "apiKey": "[B@4466af20",
+      "privateKey": "[C@6b927fb",
+      "secretKey": "[C@a514af7",
       active: false,
       createdAt: new Date(),
       updatedAt: new Date()
