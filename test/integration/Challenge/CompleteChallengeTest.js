@@ -7,10 +7,10 @@ module.exports = {
     mocha: describe('Completing a challenge', async function () {
         const session = testHelper.testSession;
         const params = {userId: 1};
-        testHelper.createNockResponse("PUT", '/challenge/complete', {userId: 1}, 200, testHelper.completeChallengeNockResp);
+        testHelper.createNockResponse("PUT", '/challenge/complete', {userId: 180}, 200, testHelper.completeChallengeNockResp);
 
         beforeEach(async () => {
-            await testHelper.createTestUsers(1);
+            await testHelper.createTestUsers(2);
         });
 
         afterEach(async () => {

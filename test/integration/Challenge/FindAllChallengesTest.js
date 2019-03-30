@@ -6,7 +6,7 @@ const testHelper = require("../../testHelper.js");
 module.exports = {
     mocha: describe('Finding all challenges', async function () {
         const session = testHelper.testSession;
-        testHelper.createNockResponse("GET", "/challenge", {userId: 1}, 200, testHelper.findAllChallengesNockResp);
+        testHelper.createNockResponse("GET", "/challenges", {userId: 180}, 200, testHelper.findAllChallengesNockResp);
 
         beforeEach(async () => {
             await testHelper.createTestUsers(1);

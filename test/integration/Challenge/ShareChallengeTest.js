@@ -7,7 +7,7 @@ module.exports = {
     mocha: describe('Sharing a challenge', async function () {
         const session = testHelper.testSession;
         const params = {userId: 1};
-        testHelper.createNockResponse("PUT", '/challenge/share', {userId: 1}, 200, testHelper.shareChallengeNockResp);
+        testHelper.createNockResponse("PUT", '/challenge/share', {userId: 180}, 200, testHelper.shareChallengeNockResp);
 
         beforeEach(async () => {
             await testHelper.createTestUsers(1);

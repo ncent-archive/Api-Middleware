@@ -75,7 +75,7 @@ module.exports = {
     },
 
     async loginUser(req, res) {
-        const apiId = req.body.userId;
+        const apiId = req.params.userId;
         const confirmationCode = req.body.code;
 
         console.log("\n\n\nloginUser in userAccounts in api", apiId, confirmationCode, "\n\n\n");
@@ -126,7 +126,7 @@ module.exports = {
     async findAllBalancesForUser(req, res) {
         console.log("\n\n\nhit findAllBalancesForUser in userAccounts.js in api\n\n\n");
         // const caller = await authHelper.findApiCaller(req.session.user.id);
-        const caller = await authHelper.findApiCaller(1);
+        const caller = await authHelper.findApiCaller(180);
         if (!caller) {
             return res.status(caller.status).send({ error: caller.error });
         }

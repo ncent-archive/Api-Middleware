@@ -17,7 +17,7 @@ module.exports = {
         let session;
         let wrongKey;
         let wrongToken;
-        const params = {userId: 1};
+        const params = {userId: 180};
         const cookies = testHelper.testCookies;
 
         beforeEach(async () => {
@@ -29,7 +29,7 @@ module.exports = {
             tokenHash = bcrypt.hashSync(token, salt);
 
             await UserAccount.create({
-                apiId: 1,
+                apiId: 180,
                 apiKey: "apiKey",
                 email: "dev1@ncnt.io",
                 secretKey: "secretKey",
@@ -48,7 +48,7 @@ module.exports = {
                 }
             };
 
-            testHelper.createNockResponse("GET", "/user", {userId: 1, id: 1}, 200, testHelper.findOneUserNockResp);
+            testHelper.createNockResponse("GET", "/user", {userId: 180, id: 180}, 200, testHelper.findOneUserNockResp);
         });
 
         afterEach(async () => {
@@ -57,9 +57,9 @@ module.exports = {
 
         it('should return the user object on successful login', async function () {
             await userAccountsController.loginUser({params, body: successBody, session}, new testHelper.pseudoRes(async function (resp) {
-                console.log(resp);
+                console.log("LOGIN RESP", resp);
                 testHelper.expect(typeof resp).to.equal('object');
-                testHelper.expect(resp.apiId).to.equal(1);
+                testHelper.expect(resp.apiId).to.equal(180);
             }));
         });
 

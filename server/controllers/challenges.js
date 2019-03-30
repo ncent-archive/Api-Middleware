@@ -18,7 +18,7 @@ module.exports = {
         const challengeNamespace = req.body.challenge.challengeNamespace;
         // const callerData = await authHelper.findApiCaller(req.session.user.id);
         const callerData = await authHelper.findApiCaller(180);
-        console.log("\ncallerData returned as", callerData.dataValues);
+        console.log("\ncallerData returned as", callerData);
         if (callerData.error) {
             return res.status(callerData.status).send({error: callerData.error});
         }
@@ -144,7 +144,7 @@ module.exports = {
         const {challengeId, completerPublicKey} = req.body;
 
         // const callerData = await authHelper.findApiCaller(req.session.user.id);
-        const callerData = await authHelper.findApiCaller(1);
+        const callerData = await authHelper.findApiCaller(180);
         if (callerData.error) {
             return res.status(callerData.status).send({error: callerData.error});
         }

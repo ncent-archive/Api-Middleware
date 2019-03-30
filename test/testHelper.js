@@ -38,7 +38,7 @@ const testSession = {
         console.log("session deleted");
     },
     user: {
-        "id": 1,
+        "id": 180,
         "createdAt": "2019-02-18T22:34:51.000Z",
         "updatedAt": "null",
         "deletedAt": "null",
@@ -72,7 +72,7 @@ const testSession = {
 const createChallengeReqBody = {
     "challengeNamespace": {
         "challengeSettings": {
-            "admin": 1,
+            "admin": 180,
             "description": "TESTdescription0",
             "expiration": "2019-02-02T00:35:01.441Z",
             "imageUrl": "TESTimageUrl0",
@@ -118,7 +118,8 @@ const redeemChallengeReqBody = {
 
 const completeChallengeReqBody = {
     "completerPublicKey": "some_public_key",
-    "challengeId": 1
+    "challengeId": 1,
+    "completerEmail": "dev1@ncnt.io"
 };
 
 const createChallengeNockResp = {
@@ -240,7 +241,7 @@ const findAllBalancesForUserNockResp = {
                 "sponsorName" : "TESTsponsorName1",
                 "expiration" : "2019-01-24T13:55:04.182-08:00",
                 "shareExpiration" : "2019-01-24T13:55:04.182-08:00",
-                "admin" : 1,
+                "admin" : 180,
                 "offChain" : false,
                 "maxShares" : 100,
                 "maxRewards" : "null",
@@ -524,7 +525,7 @@ const findAllBalancesForUserNockResp = {
                 "sponsorName" : "TESTsponsorName0",
                 "expiration" : "2019-01-24T13:55:04.182-08:00",
                 "shareExpiration" : "2019-01-24T13:55:04.182-08:00",
-                "admin" : 1,
+                "admin" : 180,
                 "offChain" : false,
                 "maxShares" : 100,
                 "maxRewards" : "null",
@@ -660,7 +661,7 @@ const findAllBalancesForUserNockResp = {
                 "sponsorName" : "TESTsponsorName2",
                 "expiration" : "2019-01-24T13:55:04.182-08:00",
                 "shareExpiration" : "2019-01-24T13:55:04.182-08:00",
-                "admin" : 1,
+                "admin" : 180,
                 "offChain" : false,
                 "maxShares" : 100,
                 "maxRewards" : "null",
@@ -799,7 +800,7 @@ const findAllChallengesNockResp = [ {
         "sponsorName" : "TESTsponsorName0",
         "expiration" : "2019-01-25T12:36:40.075-08:00",
         "shareExpiration" : "2019-01-25T12:36:40.075-08:00",
-        "admin" : 1,
+        "admin" : 180,
         "offChain" : false,
         "maxShares" : 100,
         "maxRewards" : "null",
@@ -887,7 +888,7 @@ const findAllChallengesNockResp = [ {
         "sponsorName" : "TESTsponsorName2",
         "expiration" : "2019-01-25T12:36:40.075-08:00",
         "shareExpiration" : "2019-01-25T12:36:40.075-08:00",
-        "admin" : 1,
+        "admin" : 180,
         "offChain" : false,
         "maxShares" : 100,
         "maxRewards" : "null",
@@ -975,7 +976,7 @@ const findAllChallengesNockResp = [ {
         "sponsorName" : "TESTsponsorName0",
         "expiration" : "2019-01-25T12:36:40.120-08:00",
         "shareExpiration" : "2019-01-25T12:36:40.120-08:00",
-        "admin" : 1,
+        "admin" : 180,
         "offChain" : false,
         "maxShares" : 100,
         "maxRewards" : "null",
@@ -1075,7 +1076,7 @@ const findAllChallengesNockResp = [ {
         "sponsorName" : "TESTsponsorName1",
         "expiration" : "2019-01-25T12:36:40.075-08:00",
         "shareExpiration" : "2019-01-25T12:36:40.075-08:00",
-        "admin" : 1,
+        "admin" : 180,
         "offChain" : false,
         "maxShares" : 100,
         "maxRewards" : "null",
@@ -1151,7 +1152,7 @@ const findAllChallengesNockResp = [ {
 } ];
 
 const findOneUserNockResp = {
-    "id": 1,
+    "id": 180,
     "createdAt": "2019-02-18T22:34:51.000Z",
     "updatedAt": "null",
     "deletedAt": "null",
@@ -1395,9 +1396,9 @@ const createUserReqBody = {
 };
 
 async function createTestUsers(numUsers) {
-    for (let i = 1; i <= numUsers; i++) {
+    for (let i = 0; i <= numUsers; i++) {
         await UserAccount.create({
-            apiId: i,
+            apiId: i + 180,
             apiKey: `apiKey${i}`,
             email: `dev${i}@ncnt.io`,
             secretKey: `secretKey${i}`,
