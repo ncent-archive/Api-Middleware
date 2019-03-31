@@ -194,9 +194,9 @@ module.exports = {
        
 
         if (req.session.user) {
-            callerData = await authHelper.findApiCaller(req.session.user.id);
+            callerData = await authHelper.findApiCaller(req.session.user.apiId);
         } else {
-            callerData = await authHelper.findApiCaller(1);
+            callerData = await authHelper.findApiCaller(180);
         }
 
         if (callerData.error) {
@@ -205,9 +205,9 @@ module.exports = {
 
         let user;
         if (req.session.user) {
-            user = await UserAccount.findOne({ where: { apiId: req.session.user.id } });
+            user = await UserAccount.findOne({ where: { apiId: req.session.user.apiId } });
         } else {
-            user = await UserAccount.findOne({ where: { apiId: 1 } });
+            user = await UserAccount.findOne({ where: { apiId: 180 } });
         }
 
         const existingChallengeParticipant = await ChallengeParticipant.findOne({
@@ -247,9 +247,9 @@ module.exports = {
         const challengeId = req.params.challengeId;
         let user;
         if (req.session.user) {
-            user = await UserAccount.findOne({where: {apiId: req.session.user.id}});
+            user = await UserAccount.findOne({where: {apiId: req.session.user.apiId }});
         } else {
-            user = await UserAccount.findOne({ where: { apiId: 1 } });
+            user = await UserAccount.findOne({ where: { apiId: 180 } });
         }
         const userId = user.id;
 

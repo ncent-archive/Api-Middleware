@@ -162,15 +162,17 @@ module.exports = {
                     secretKey: newUser.secretKey,
                     publicKey: newUser.value.cryptoKeyPair.publicKey,
                     privateKey: newUser.privateKey,
-                    active: false
+                    active: true
                 });
-                verifyOrCreateHelper(user, res, email);
+                req.session.user = user;
+                return res.status(200).send(user);
             })
             .catch(async err => {
                 // console.log("\n\n\n.catch in post", err);
                 console.log("\n\n\nelse case scenario in userAccounts, verifyOrCreate, api\n", "email", email);
                 user = await UserAccount.findOne({ where: { email } });
-                verifyOrCreateHelper(user, res, email);
+                req.session.user = user;
+                return res.status(200).send(user);
             });
     },
 
