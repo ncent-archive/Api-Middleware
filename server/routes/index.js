@@ -20,6 +20,9 @@ module.exports = (app) => {
     //sends a one-time passcode to the user for login and also creates their account if they do not exist
     app.post("/api/users/verify", userAccountsController.verifyOrCreate);
 
+    //sends a refferal link to the user
+    app.patch("/api/users/email", userAccountsController.sendRefferalLinkEmail);
+
     //logs a user in and begins their session
     app.post("/api/users/login", userAccountsController.loginUser);
 

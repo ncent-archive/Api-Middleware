@@ -20,7 +20,7 @@ app.use(
             expires: 100000000000
         },
         store: new postgreSQLStore({
-            conString: "postgres://@localhost:5432/api-middleware"
+            conString: "postgres://arya:arya@localhost:5432/api-middleware"
         })
     })
 );

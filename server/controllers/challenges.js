@@ -93,11 +93,11 @@ module.exports = {
 
     async shareChallenge (req, res) {
         let sharerApiId;
-        const { challengeId, shares, expiration, referralCode } = req.body;        
+        const { challengeId, shares, expiration, referralCode } = req.body;     
         console.log("\n\n\ntop of shareChallenge api-middleware", "referralCode", referralCode, "shares", shares, "expiration", expiration, "referralCode", referralCode);
 
-        const publicKeyToShareWith = req.session.user.cryptoKeyPair.publicKey;
-        const emailToShareWith = req.session.user.userMetadata.email;
+        const publicKeyToShareWith = req.session.user.publicKey;
+        const emailToShareWith = req.session.user.email;
 
         const challengeParticipant = await ChallengeParticipant.findOne({where: {referralCode}});
         if (challengeParticipant) {

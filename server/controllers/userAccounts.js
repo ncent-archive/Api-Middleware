@@ -27,6 +27,12 @@ async function verifyOrCreateHelper(user, res, email) {
 }
 
 module.exports = {
+    async sendRefferalLinkEmail(req, res) {
+        console.log("\n\n\nhit sendRefferalLinkEmail in userAccounts.js in api\n\n\n");
+        const { email, shortUrl } = req.body;
+        let response = await awsEmail.sendRefferalLinkEmail(email, shortUrl);
+        return res.status(200).send(eq.session.user);
+    },
     async createUser(req, res) {
         console.log("\n\n\nhit createUser in userAccounts.js in api\n\n\n");
         const { email, firstname, lastname } = req.body;
