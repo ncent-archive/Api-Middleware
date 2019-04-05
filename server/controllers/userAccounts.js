@@ -8,6 +8,7 @@ const apiEndpoint = process.env.API;
 const axios = require("axios");
 const axiosRetry = require("axios-retry");
 const authHelper = require("../helpers/authHelper.js");
+const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 axiosRetry(axios, { retries: 3, retryDelay: axiosRetry.exponentialDelay });
 
 async function verifyOrCreateHelper(user, res, email) {
@@ -149,6 +150,9 @@ module.exports = {
     async verifyOrCreate(req, res) {
         let user;
         const { email, firstname, lastname } = req.body;
+        if(!emailRegex.test(String(email).toLowerCase())) {
+            return res.status(400).send(user);
+        }
         // const createUserResponse = await axios.post(`${apiEndpoint}/user`, {
         //         email,
         //         firstname,
