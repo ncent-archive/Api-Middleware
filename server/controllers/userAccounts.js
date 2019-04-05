@@ -181,6 +181,29 @@ module.exports = {
                 // console.log("\n\n\n.catch in post", err);
                 console.log("\n\n\nelse case scenario in userAccounts, verifyOrCreate, api\n", "email", email);
                 user = await UserAccount.findOne({ where: { email } });
+                if(user == null) {
+                    try {
+                        console.log("Finding user from API...");
+                        const apiUser = await axios.get(`${apiEndpoint}/user?email=${email}`, {
+                            headers: {
+                                'Authorization': authHelper.getAuthString(caller.apiKey, caller.secretKey)
+                            }
+                        }).data;
+
+                        user = await UserAccount.create({
+                            apiId: apiUser.value.id,
+                            apiKey: apiUser.value.apiCreds.apiKey,
+                            email: email,
+                            secretKey: apiUser.secretKey,
+                            publicKey: apiUser.value.cryptoKeyPair.publicKey,
+                            privateKey: apiUser.privateKey,
+                            active: true
+                        });
+                    } catch(e) {
+                        console.log("Failed to find user from the API");
+                        return res.status(400).send(user);
+                    }
+                }
                 req.session.user = user;
                 return res.status(200).send(user);
             });
