@@ -203,6 +203,11 @@ module.exports = {
             return res.status(callerData.status).send({error: callerData.error});
         }
 
+        // TODO: change this once we get rid of the legacy users
+        if(callerData.secretKey === "LEGACY") {
+            callerData = await authHelper.findApiCaller(180);
+        }
+
         let user;
         if (req.session.user) {
             user = await UserAccount.findOne({ where: { apiId: req.session.user.apiId } });
@@ -210,7 +215,7 @@ module.exports = {
             user = await UserAccount.findOne({ where: { apiId: 180 } });
         }
 
-        const existingChallengeParticipant = await ChallengeParticipant.findOne({
+        let existingChallengeParticipant = await ChallengeParticipant.findOne({
             where: {
                 userId: user.id,
                 challengeId
@@ -222,7 +227,7 @@ module.exports = {
             challengeParticipant: existingChallengeParticipant 
         });
 
-        const findOneChallengeResp = await axios.get(`${apiEndpoint}/challenge?id=${challengeId}&userId=${callerData.apiId}`, {
+        const findOneChallengeResp = await axios.get(`${apiEndpoint}/challenge?id=${challengeId}&userId=${user.apiId}`, {
             headers: {'Authorization': authHelper.getAuthString(callerData.apiKey, callerData.secretKey)}
         });
 
