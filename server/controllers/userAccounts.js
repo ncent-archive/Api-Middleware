@@ -184,23 +184,31 @@ module.exports = {
                 if(user == null) {
                     try {
                         console.log("Finding user from API...");
-                        const apiUser = await axios.get(`${apiEndpoint}/user?email=${email}`, {
+
+                        const caller = await authHelper.findApiCaller(180);
+                        if (!caller) {
+                            return res.status(caller.status).send({ error: caller.error });
+                        }
+
+                        const apiUserResp = await axios.get(`${apiEndpoint}/user?userId=${caller.apiId}&id=${caller.apiId}&email=${email}`, {
                             headers: {
                                 'Authorization': authHelper.getAuthString(caller.apiKey, caller.secretKey)
                             }
-                        }).data;
+                        });
+                        const apiUser = apiUserResp.data
 
                         user = await UserAccount.create({
-                            apiId: apiUser.value.id,
-                            apiKey: apiUser.value.apiCreds.apiKey,
+                            apiId: apiUser.id,
+                            apiKey: apiUser.apiCreds.apiKey,
                             email: email,
-                            secretKey: apiUser.secretKey,
-                            publicKey: apiUser.value.cryptoKeyPair.publicKey,
-                            privateKey: apiUser.privateKey,
+                            secretKey: "LEGACY",
+                            publicKey: apiUser.cryptoKeyPair.publicKey,
+                            privateKey: "LEGACY",
                             active: true
                         });
                     } catch(e) {
                         console.log("Failed to find user from the API");
+                        console.log(e);
                         return res.status(400).send(user);
                     }
                 }
