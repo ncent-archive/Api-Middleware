@@ -446,7 +446,7 @@ module.exports = {
                                     <tbody>
                                       <tr>
                                         <td align="center" class="title">
-                                          <div class="text">Sign In&nbsp;Code</div>
+                                          <div class="text">Referral Url</div>
                                         </td>
                                       </tr>
                                       <tr>
@@ -482,7 +482,7 @@ module.exports = {
                                     <tbody>
                                       <tr>
                                         <td align="center" class="secondary">
-                                          <div class="subtitle text">Here is the sign in code <br>you&nbsp;requested</div>
+                                          <div class="subtitle text">Use this referral link to share with your network <br>in order to share in the rewards!</div>
                                         </td>
                                       </tr>
                                       <tr>
