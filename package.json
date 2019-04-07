@@ -18,6 +18,8 @@
   },
   "homepage": "https://github.com/ncent/Api-Middleware#readme",
   "dependencies": {
+    "@slack/events-api": "^2.2.0",
+    "@slack/web-api": "^5.0.0",
     "aws-sdk": "^2.405.0",
     "axios": "^0.18.0",
     "axios-retry": "^3.1.2",
