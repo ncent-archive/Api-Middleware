@@ -47,6 +47,9 @@ module.exports = (app) => {
     app.post("/api/challenges", challengesController.createChallenge);
 
     //retrieves a single challenge by ID
+    app.get("/api/challenges/:challengeId/chain", challengesController.findOneChallengeChain);
+
+    //retrieves a single challenge by ID
     app.get("/api/challenges/:challengeId", challengesController.findOneChallenge);
 
     //finds all challenges stored at the API level

@@ -61,6 +61,22 @@ module.exports = {
         return res.status(findOneChallengeResp.status).send(findOneChallengeResp.data);
     },
 
+    async findOneChallengeChain (req, res) {
+        const challengeId = req.params.challengeId;
+        // const callerData = await authHelper.findApiCaller(req.session.user.id);
+        console.log("\nhit findOneChallengeChain middleware: ", challengeId);
+        const callerData = await authHelper.findApiCaller(180);
+        if (callerData.error) {
+            return res.status(callerData.status).send({error: callerData.error});
+        }
+        
+        const findOneChallengeResp = await axios.get(`${apiEndpoint}/challenge/chains?challengeId=${challengeId}&userId=${callerData.apiId}`, {
+            headers: {'Authorization': authHelper.getAuthString(callerData.apiKey, callerData.secretKey)}
+        });
+
+        return res.status(findOneChallengeResp.status).send(findOneChallengeResp.data);
+    },
+
     async findAllChallenges (req, res) {
         // const callerData = await authHelper.findApiCaller(req.session.user.id);
         console.log("\n\nhit findAllChallenges middleware");
