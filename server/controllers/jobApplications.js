@@ -8,7 +8,13 @@ const conversationId = 'CHN7ASFU0';
 module.exports = {
   async sendJobApplication(req, res) {
     console.log("\n\n\njobApplicationsController, sendJobApplications", req.body);
-    let newJobApplication = await JobApplication.create(req.body);
+    try {
+        console.log("creating job application");
+        let newJobApplication = await JobApplication.create(req.body);
+    } catch(e) {
+        console.log("failed to create job application: ", e);
+        return res.status(403).send({ invalidJobApplication: true, errors: e.errors });
+    }
     console.log("\njobApplicationsController, new db jobApplication", newJobApplication.dataValues);
 
     let slackMessage = "";
